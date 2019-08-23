@@ -38,7 +38,7 @@
 		CE99A7042310123800E328F6 /* quemath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = quemath.h; sourceTree = "<group>"; };
 		CE99A708231013C700E328F6 /* vec.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = vec.c; sourceTree = "<group>"; };
 		CE99A709231013C700E328F6 /* mat.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mat.c; sourceTree = "<group>"; };
-		CE99A70E2310141000E328F6 /* quemath-vector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "quemath-vector"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE99A70E2310141000E328F6 /* quemath-vec */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "quemath-vec"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE99A7172310143900E328F6 /* libcheck.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcheck.0.dylib; path = ../../../../opt/local/lib/libcheck.0.dylib; sourceTree = "<group>"; };
 		CE99A71923101A8400E328F6 /* ivec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ivec.h; sourceTree = "<group>"; };
 		CE99A71C23101EDB00E328F6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -82,7 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				CE99A6F223100CBC00E328F6 /* libquemath.dylib */,
-				CE99A70E2310141000E328F6 /* quemath-vector */,
+				CE99A70E2310141000E328F6 /* quemath-vec */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -153,9 +153,9 @@
 			productReference = CE99A6F223100CBC00E328F6 /* libquemath.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
-		CE99A70D2310141000E328F6 /* quemath-vector */ = {
+		CE99A70D2310141000E328F6 /* quemath-vec */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CE99A7122310141000E328F6 /* Build configuration list for PBXNativeTarget "quemath-vector" */;
+			buildConfigurationList = CE99A7122310141000E328F6 /* Build configuration list for PBXNativeTarget "quemath-vec" */;
 			buildPhases = (
 				CE99A70A2310141000E328F6 /* Sources */,
 				CE99A70B2310141000E328F6 /* Frameworks */,
@@ -165,9 +165,9 @@
 			);
 			dependencies = (
 			);
-			name = "quemath-vector";
+			name = "quemath-vec";
 			productName = "test-vector";
-			productReference = CE99A70E2310141000E328F6 /* quemath-vector */;
+			productReference = CE99A70E2310141000E328F6 /* quemath-vec */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -200,7 +200,7 @@
 			projectRoot = "";
 			targets = (
 				CE99A6F123100CBC00E328F6 /* quemath */,
-				CE99A70D2310141000E328F6 /* quemath-vector */,
+				CE99A70D2310141000E328F6 /* quemath-vec */,
 			);
 		};
 /* End PBXProject section */
@@ -356,7 +356,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CE99A7122310141000E328F6 /* Build configuration list for PBXNativeTarget "quemath-vector" */ = {
+		CE99A7122310141000E328F6 /* Build configuration list for PBXNativeTarget "quemath-vec" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE99A7132310141000E328F6 /* Debug */,

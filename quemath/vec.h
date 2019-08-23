@@ -141,7 +141,7 @@ static vec vec_dot(const vec a, const vec b) {
 }
 
 static ivec vec_equal(const vec a, const vec b) {
-	return (ivec) vec_cast_ivec((vec) _mm_cmpeq_ps(a.vec, b.vec));
+	return vec_cast_ivec((vec) _mm_cmpeq_ps(a.vec, b.vec));
 }
 
 static int vec_equals(const vec a, const vec b) {
