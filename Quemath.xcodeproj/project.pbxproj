@@ -1,0 +1,371 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CE99A6FE2310120900E328F6 /* mat.h in Headers */ = {isa = PBXBuildFile; fileRef = CE99A6FD231010CD00E328F6 /* mat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CE99A6FF2310120B00E328F6 /* quat.h in Headers */ = {isa = PBXBuildFile; fileRef = CE99A6FC23100FB400E328F6 /* quat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CE99A7002310120D00E328F6 /* vec.h in Headers */ = {isa = PBXBuildFile; fileRef = CE99A6FB23100DBE00E328F6 /* vec.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CE99A7052310123800E328F6 /* quemath.h in Headers */ = {isa = PBXBuildFile; fileRef = CE99A7042310123800E328F6 /* quemath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CE99A7152310142600E328F6 /* vec.c in Sources */ = {isa = PBXBuildFile; fileRef = CE99A708231013C700E328F6 /* vec.c */; };
+		CE99A7182310143900E328F6 /* libcheck.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE99A7172310143900E328F6 /* libcheck.0.dylib */; };
+		CE99A71A23101A8400E328F6 /* ivec.h in Headers */ = {isa = PBXBuildFile; fileRef = CE99A71923101A8400E328F6 /* ivec.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CE99A70C2310141000E328F6 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		CE99A6F223100CBC00E328F6 /* libquemath.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libquemath.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE99A6F923100D7200E328F6 /* configure.ac */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = configure.ac; sourceTree = "<group>"; };
+		CE99A6FA23100D7200E328F6 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
+		CE99A6FB23100DBE00E328F6 /* vec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vec.h; sourceTree = "<group>"; };
+		CE99A6FC23100FB400E328F6 /* quat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = quat.h; sourceTree = "<group>"; };
+		CE99A6FD231010CD00E328F6 /* mat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mat.h; sourceTree = "<group>"; };
+		CE99A7042310123800E328F6 /* quemath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = quemath.h; sourceTree = "<group>"; };
+		CE99A708231013C700E328F6 /* vec.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = vec.c; sourceTree = "<group>"; };
+		CE99A709231013C700E328F6 /* mat.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mat.c; sourceTree = "<group>"; };
+		CE99A70E2310141000E328F6 /* quemath-vector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "quemath-vector"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE99A7172310143900E328F6 /* libcheck.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcheck.0.dylib; path = ../../../../opt/local/lib/libcheck.0.dylib; sourceTree = "<group>"; };
+		CE99A71923101A8400E328F6 /* ivec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ivec.h; sourceTree = "<group>"; };
+		CE99A71C23101EDB00E328F6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CE99A71D2310218A00E328F6 /* Makefile.am */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
+		CE99A71E2310223B00E328F6 /* Makefile.am */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CE99A6F023100CBC00E328F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE99A70B2310141000E328F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE99A7182310143900E328F6 /* libcheck.0.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CE99A6E923100CBC00E328F6 = {
+			isa = PBXGroup;
+			children = (
+				CE99A71C23101EDB00E328F6 /* README.md */,
+				CE99A7062310133800E328F6 /* quemath */,
+				CE99A7072310133800E328F6 /* test */,
+				CE99A6F923100D7200E328F6 /* configure.ac */,
+				CE99A6FA23100D7200E328F6 /* Makefile.am */,
+				CE99A6F323100CBC00E328F6 /* Products */,
+				CE99A7162310143900E328F6 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		CE99A6F323100CBC00E328F6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CE99A6F223100CBC00E328F6 /* libquemath.dylib */,
+				CE99A70E2310141000E328F6 /* quemath-vector */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CE99A7062310133800E328F6 /* quemath */ = {
+			isa = PBXGroup;
+			children = (
+				CE99A6FD231010CD00E328F6 /* mat.h */,
+				CE99A6FC23100FB400E328F6 /* quat.h */,
+				CE99A7042310123800E328F6 /* quemath.h */,
+				CE99A6FB23100DBE00E328F6 /* vec.h */,
+				CE99A71923101A8400E328F6 /* ivec.h */,
+				CE99A71D2310218A00E328F6 /* Makefile.am */,
+			);
+			path = quemath;
+			sourceTree = "<group>";
+		};
+		CE99A7072310133800E328F6 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				CE99A709231013C700E328F6 /* mat.c */,
+				CE99A708231013C700E328F6 /* vec.c */,
+				CE99A71E2310223B00E328F6 /* Makefile.am */,
+			);
+			path = test;
+			sourceTree = "<group>";
+		};
+		CE99A7162310143900E328F6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CE99A7172310143900E328F6 /* libcheck.0.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		CE99A6EE23100CBC00E328F6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE99A71A23101A8400E328F6 /* ivec.h in Headers */,
+				CE99A6FE2310120900E328F6 /* mat.h in Headers */,
+				CE99A6FF2310120B00E328F6 /* quat.h in Headers */,
+				CE99A7052310123800E328F6 /* quemath.h in Headers */,
+				CE99A7002310120D00E328F6 /* vec.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		CE99A6F123100CBC00E328F6 /* quemath */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE99A6F623100CBC00E328F6 /* Build configuration list for PBXNativeTarget "quemath" */;
+			buildPhases = (
+				CE99A6EE23100CBC00E328F6 /* Headers */,
+				CE99A6EF23100CBC00E328F6 /* Sources */,
+				CE99A6F023100CBC00E328F6 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = quemath;
+			productName = quemath;
+			productReference = CE99A6F223100CBC00E328F6 /* libquemath.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		CE99A70D2310141000E328F6 /* quemath-vector */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE99A7122310141000E328F6 /* Build configuration list for PBXNativeTarget "quemath-vector" */;
+			buildPhases = (
+				CE99A70A2310141000E328F6 /* Sources */,
+				CE99A70B2310141000E328F6 /* Frameworks */,
+				CE99A70C2310141000E328F6 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "quemath-vector";
+			productName = "test-vector";
+			productReference = CE99A70E2310141000E328F6 /* quemath-vector */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CE99A6EA23100CBC00E328F6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1030;
+				ORGANIZATIONNAME = "https://github.com/jdolan";
+				TargetAttributes = {
+					CE99A6F123100CBC00E328F6 = {
+						CreatedOnToolsVersion = 10.3;
+					};
+					CE99A70D2310141000E328F6 = {
+						CreatedOnToolsVersion = 10.3;
+					};
+				};
+			};
+			buildConfigurationList = CE99A6ED23100CBC00E328F6 /* Build configuration list for PBXProject "Quemath" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CE99A6E923100CBC00E328F6;
+			productRefGroup = CE99A6F323100CBC00E328F6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CE99A6F123100CBC00E328F6 /* quemath */,
+				CE99A70D2310141000E328F6 /* quemath-vector */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CE99A6EF23100CBC00E328F6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE99A70A2310141000E328F6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE99A7152310142600E328F6 /* vec.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		CE99A6F423100CBC00E328F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/opt/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					/opt/local/lib,
+				);
+				ONLY_ACTIVE_ARCH = YES;
+			};
+			name = Debug;
+		};
+		CE99A6F523100CBC00E328F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/opt/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					/opt/local/lib,
+				);
+				ONLY_ACTIVE_ARCH = YES;
+			};
+			name = Release;
+		};
+		CE99A6F723100CBC00E328F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		CE99A6F823100CBC00E328F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		CE99A7132310141000E328F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CE99A7142310141000E328F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CE99A6ED23100CBC00E328F6 /* Build configuration list for PBXProject "Quemath" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE99A6F423100CBC00E328F6 /* Debug */,
+				CE99A6F523100CBC00E328F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE99A6F623100CBC00E328F6 /* Build configuration list for PBXNativeTarget "quemath" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE99A6F723100CBC00E328F6 /* Debug */,
+				CE99A6F823100CBC00E328F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE99A7122310141000E328F6 /* Build configuration list for PBXNativeTarget "quemath-vector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE99A7132310141000E328F6 /* Debug */,
+				CE99A7142310141000E328F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CE99A6EA23100CBC00E328F6 /* Project object */;
+}
