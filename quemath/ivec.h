@@ -40,6 +40,7 @@ typedef union {
 	};
 } ivec;
 
+static inline ivec ivec0(void);
 static inline ivec ivec1(int i);
 static inline ivec ivec2(int i, int j);
 static inline ivec ivec3(int i, int j, int k);
@@ -53,10 +54,17 @@ static inline ivec ivec_greater_than(const ivec a, const ivec b);
 static inline ivec ivec_less_than(const ivec a, const ivec b);
 static inline ivec ivec_max(const ivec a, const ivec b);
 static inline ivec ivec_min(const ivec a, const ivec b);
+static inline ivec ivec_modulo(const ivec a, const ivec b);
 static inline ivec ivec_multiply(const ivec a, const ivec b);
 static inline ivec ivec_new(int i);
+static inline ivec ivec_random(ivec *state);
+static inline ivec ivec_random_range(ivec *state, ivec mins, ivec maxs);
 static inline ivec ivec_subtract(const ivec a, const ivec b);
 static inline ivec ivec_true(void);
+
+static inline ivec ivec0(void) {
+	return (ivec) _mm_setzero_si128();
+}
 
 static ivec ivec1(int i) {
 	return ivec2(i, 0);
@@ -110,12 +118,29 @@ static ivec ivec_min(const ivec a, const ivec b) {
 	return (ivec) _mm_min_epi32(a.ivec, b.ivec);
 }
 
+static ivec ivec_modulo(const ivec a, const ivec b) {
+	return ivec4(a.i % b.i, a.j % b.j, a.k % b.k, a.l % b.l);
+}
+
 static ivec ivec_multiply(const ivec a, const ivec b) {
 	return (ivec) _mm_mul_epi32(a.ivec, b.ivec);
 }
 
 static ivec ivec_new(int i) {
 	return (ivec) _mm_set1_epi32(i);
+}
+
+static ivec ivec_random(ivec *state) {
+	ivec r = *state;
+	r = (ivec) _mm_xor_si128(r.ivec, _mm_slli_epi32(r.ivec, 13));
+	r = (ivec) _mm_xor_si128(r.ivec, _mm_srli_epi32(r.ivec, 17));
+	r = (ivec) _mm_xor_si128(r.ivec, _mm_slli_epi32(r.ivec,  5));
+	r = (ivec) _mm_and_si128(r.ivec, _mm_set1_epi32(RAND_MAX));
+	return *state = r;
+}
+
+static ivec ivec_random_range(ivec *state, ivec mins, ivec maxs) {
+	return ivec_add(mins, ivec_modulo(ivec_random(state), ivec_subtract(maxs, mins)));
 }
 
 static ivec ivec_subtract(const ivec a, const ivec b) {

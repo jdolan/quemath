@@ -52,13 +52,17 @@ typedef union {
 	};
 } vec;
 
+
 static inline vec vec0(void);
 static inline vec vec1(float x);
 static inline vec vec2(float x, float y);
 static inline vec vec3(float x, float y, float z);
 static inline vec vec4(float x, float y, float z, float w);
 static inline vec vec_add(const vec a, const vec b);
-static inline ivec vec_cast_ivec(const vec v);
+static inline ivec ivec_cast_vec(const vec v);
+static inline vec vec_cast_ivec(const ivec v);
+static inline ivec ivec_convert_vec(const vec v);
+static inline vec vec_convert_ivec(const ivec v);
 static inline vec vec_cross(const vec a, const vec b);
 static inline vec vec_degrees(const vec radians);
 static inline vec vec_distance(const vec a, const vec b);
@@ -81,6 +85,8 @@ static inline vec vec_normalize(const vec v);
 static inline vec vec_normalize_fast(const vec v);
 static inline ivec vec_not_equal(const vec a, const vec b);
 static inline vec vec_radians(const vec degrees);
+static inline vec vec_random(vec *state);
+static inline vec vec_random_range(vec *state, const vec mins, const vec maxs);
 static inline vec vec_rsqrt(const vec v);
 static inline vec vec_scale(const vec v, float scale);
 static inline vec vec_scale_add(const vec a, const vec b, float scale);
@@ -112,8 +118,20 @@ static vec vec_add(const vec a, const vec b) {
 	return (vec) _mm_add_ps(a.vec, b.vec);
 }
 
-static ivec vec_cast_ivec(const vec v) {
+static ivec ivec_cast_vec(const vec v) {
 	return (ivec) _mm_castps_si128(v.vec);
+}
+
+static vec vec_cast_ivec(const ivec v) {
+	return (vec) _mm_castsi128_ps(v.ivec);
+}
+
+static ivec ivec_convert_vec(const vec v) {
+	return (ivec) _mm_cvtps_epi32(v.vec);
+}
+
+static vec vec_convert_ivec(const ivec v) {
+	return (vec) _mm_cvtepi32_ps(v.ivec);
 }
 
 static vec vec_cross(const vec a, const vec b) {
@@ -141,7 +159,7 @@ static vec vec_dot(const vec a, const vec b) {
 }
 
 static ivec vec_equal(const vec a, const vec b) {
-	return vec_cast_ivec((vec) _mm_cmpeq_ps(a.vec, b.vec));
+	return ivec_cast_vec((vec) _mm_cmpeq_ps(a.vec, b.vec));
 }
 
 static int vec_equals(const vec a, const vec b) {
@@ -149,11 +167,11 @@ static int vec_equals(const vec a, const vec b) {
 }
 
 static ivec vec_greater_than(const vec a, const vec b) {
-	return vec_cast_ivec((vec) _mm_cmpgt_ps(a.vec, b.vec));
+	return ivec_cast_vec((vec) _mm_cmpgt_ps(a.vec, b.vec));
 }
 
 static ivec vec_greater_than_equal(const vec a, const vec b) {
-	return vec_cast_ivec((vec) _mm_cmpge_ps(a.vec, b.vec));
+	return ivec_cast_vec((vec) _mm_cmpge_ps(a.vec, b.vec));
 }
 
 static vec vec_length(const vec v) {
@@ -161,11 +179,11 @@ static vec vec_length(const vec v) {
 }
 
 static ivec vec_less_than(const vec a, const vec b) {
-	return vec_cast_ivec((vec) _mm_cmplt_ps(a.vec, b.vec));
+	return ivec_cast_vec((vec) _mm_cmplt_ps(a.vec, b.vec));
 }
 
 static ivec vec_less_than_equal(const vec a, const vec b) {
-	return vec_cast_ivec((vec) _mm_cmplt_ps(a.vec, b.vec));
+	return ivec_cast_vec((vec) _mm_cmple_ps(a.vec, b.vec));
 }
 
 static vec vec_max(const vec a, const vec b) {
@@ -201,11 +219,24 @@ static vec vec_normalize_fast(const vec v) {
 }
 
 static ivec vec_not_equal(const vec a, const vec b) {
-	return vec_cast_ivec((vec) _mm_cmpneq_ps(a.vec, b.vec));
+	return ivec_cast_vec((vec) _mm_cmpneq_ps(a.vec, b.vec));
 }
 
 static vec vec_radians(const vec degrees) {
 	return vec_scale(degrees, M_PI / 180);
+}
+
+static vec vec_random(vec *state) {
+	ivec s = ivec_cast_vec(*state);
+	ivec r = ivec_random(&s);
+
+	*state = vec_cast_ivec(r);
+
+	return vec_scale(vec_convert_ivec(r), 1.0 / RAND_MAX);
+}
+
+static vec vec_random_range(vec *state, const vec mins, const vec maxs) {
+	return vec_add(mins, vec_multiply(vec_subtract(maxs, mins), vec_random(state)));
 }
 
 static vec vec_rsqrt(const vec v) {
