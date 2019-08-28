@@ -34,120 +34,170 @@
 	\
 	const clock_t end = clock(); \
 	\
-	printf("%s: %g seconds\n", name, (end - start) / (double) CLOCKS_PER_SEC); \
+	printf("%s: %.9f seconds\n", name, (end - start) / (double) CLOCKS_PER_SEC); \
+}
+
+static vec *vectors(size_t count) {
+	return calloc(count, sizeof(vec));
 }
 
 static vec *random_vectors(size_t count) {
+	vec *v = vectors(count), *out = v;
 
-	vec *vectors = calloc(count, sizeof(vec));
 	vec state = vec4(0xfeed, 0xdad, 0xdead, 0xbeef);
-
-	vec *out = vectors;
 	for (size_t i = 0; i < count; i++) {
 		*out++ = vec_random(&state);
 	}
 
-	return vectors;
+	return v;
 }
 
-#define VectorAdd(a,b,c) (c[0] = a[0] + b[0], c[1] = a[1] + b[1], c[2] = a[2] + b[2], c[3] = a[3] + b[3])
+#define VectorAdd(a, b, c) (c[0] = a[0] + b[0], c[1] = a[1] + b[1], c[2] = a[2] + b[2], c[3] = a[3] + b[3])
 
 START_TEST(_vec_add) {
 
 	const int iterations = 1000000;
-	vec *vectors = random_vectors(iterations);
+	vec *v = random_vectors(iterations);
 
-	TIME_BLOCK("Vector add, CPU", {
+	TIME_BLOCK("Vector add", {
 		for (int i = 0; i < iterations; i++) {
-			const float *a = (float *) &vectors[(i + 0) % iterations];
-			const float *b = (float *) &vectors[(i + 1) % iterations];
-			float *c = (float *) &vectors[(i + 2) % iterations];
+			const float *a = (float *) &v[(i + 0) % iterations];
+			const float *b = (float *) &v[(i + 1) % iterations];
+			float *c = (float *) &v[(i + 2) % iterations];
 			VectorAdd(a, b, c);
 		}
 	});
 
-	free(vectors);
-	vectors = random_vectors(iterations);
+	free(v);
+	v = random_vectors(iterations);
 
-	TIME_BLOCK("Vector add, SIMD", {
+	TIME_BLOCK("Vector add SSE", {
 		for (int i = 0; i < iterations; i++) {
-			const vec a = vectors[(i + 0) % iterations];
-			const vec b = vectors[(i + 1) % iterations];
-			vec c = vectors[(i + 2) % iterations];
-			c = vec_add(a, b);
+			const vec a = v[(i + 0) % iterations];
+			const vec b = v[(i + 1) % iterations];
+			v[(i + 2) % iterations] = vec_add(a, b);
 		}
 	});
 
-	free(vectors);
+	TIME_BLOCK("Vector add SSE2", {
+		for (int i = 0; i < iterations; i++) {
+			const __m128 a = v[(i + 0) % iterations].vec;
+			const __m128 b = v[(i + 1) % iterations].vec;
+			v[(i + 2) % iterations].vec = _mm_add_ps(a, b);
+		}
+	});
+
+	free(v);
 
 } END_TEST
 
-#define DotProduct(x, y) (x[0] * y[0] + x[1] * y[1] + x[2] * y[2])
+#define DotProduct(a, b, c) (c[0] = a[0] * b[0] + a[1] * b[1] + a[2] * b[2])
 
 START_TEST(_vec_dot) {
 
 	const int iterations = 1000000;
-	vec *vectors = random_vectors(iterations);
+	vec *v = random_vectors(iterations);
 
-	TIME_BLOCK("Dot product, CPU", {
+	TIME_BLOCK("Dot product", {
 		for (int i = 0; i < iterations; i++) {
-			const float *a = (float *) &vectors[(i + 0) % iterations];
-			const float *b = (float *) &vectors[(i + 1) % iterations];
-			float *c = (float *) &vectors[(i + 2) % iterations];
-			*c = DotProduct(a, b);
+			const float *a = (float *) &v[(i + 0) % iterations];
+			const float *b = (float *) &v[(i + 1) % iterations];
+			float *c = (float *) &v[(i + 2) % iterations];
+			DotProduct(a, b, c);
 		}
 	});
 
-	free(vectors);
-	vectors = random_vectors(iterations);
+	free(v);
+	v = random_vectors(iterations);
 
-	TIME_BLOCK("Dot product, SIMD", {
+	TIME_BLOCK("Dot product SSE", {
 		for (int i = 0; i < iterations; i++) {
-			const vec a = vectors[(i + 0) % iterations];
-			const vec b = vectors[(i + 1) % iterations];
-			vec c = vectors[(i + 2) % iterations];
-			c = vec_dot(a, b);
+			const vec a = v[(i + 0) % iterations];
+			const vec b = v[(i + 1) % iterations];
+			vec *c = &v[(i + 2) % iterations];
+			*c = vec_dot(a, b);
 		}
 	});
 
-	free(vectors);
+	free(v);
 
 } END_TEST
 
-static float VectorNormalize(float v[3]) {
+static inline vec VectorNormalize(vec v) {
 
-	const float length = sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+	const float length = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
 	if (length) {
 		const float ilength = 1.0 / length;
-		v[0] *= ilength;
-		v[1] *= ilength;
-		v[2] *= ilength;
+		v.x *= ilength;
+		v.y *= ilength;
+		v.z *= ilength;
 	}
 
-	return length;
+	return v;
 }
 
 START_TEST(_vec_normalize) {
 
 	const int iterations = 1000000;
-	vec *vectors = random_vectors(iterations);
+	vec *v = random_vectors(iterations);
 
-	TIME_BLOCK("Vector normalize, CPU", {
+	TIME_BLOCK("Vector normalize", {
 		for (int i = 0; i < iterations; i++) {
-			VectorNormalize((float *) &vectors[i]);
+			v[i] = VectorNormalize(v[i]);
 		}
 	});
 
-	free(vectors);
-	vectors = random_vectors(iterations);
+	free(v);
+	v = random_vectors(iterations);
 
-	TIME_BLOCK("Vector normalize, SIMD", {
+	TIME_BLOCK("Vector normalize SSE", {
 		for (int i = 0; i < iterations; i++) {
-			vectors[i] = vec_normalize(vectors[i]);
+			v[i] = vec_normalize(v[i]);
 		}
 	});
 
-	free(vectors);
+	free(v);
+	v = random_vectors(iterations);
+
+	TIME_BLOCK("Vector normalize fast SSE", {
+		for (int i = 0; i < iterations; i++) {
+			v[i] = vec_normalize_fast(v[i]);
+		}
+	});
+
+	free(v);
+
+} END_TEST
+
+static vec VectorScaleAdd(const vec a, const vec b, float scale) {
+	return vec3(a.x + scale * b.x, a.y + scale * b.y, a.z + scale * b.z);
+}
+
+START_TEST(_vec_scale_add) {
+
+	const int iterations = 1000000;
+	vec *v = random_vectors(iterations);
+
+	TIME_BLOCK("Vector scale add", {
+		for (int i = 0; i < iterations; i++) {
+			const vec a = v[(i + 0) % iterations];
+			const vec b = v[(i + 1) % iterations];
+			v[(i + 2) % iterations] = VectorScaleAdd(a, b, 0.5);
+		}
+	});
+
+	free(v);
+	v = random_vectors(iterations);
+
+	TIME_BLOCK("Vector scale add SSE", {
+		for (int i = 0; i < iterations; i++) {
+			const vec a = v[(i + 0) % iterations];
+			const vec b = v[(i + 1) % iterations];
+			v[(i + 2) % iterations] = vec_scale_add(a, b, 0.5);
+		}
+	});
+
+	free(v);
 
 } END_TEST
 
@@ -158,6 +208,7 @@ int main(int argc, char **argv) {
 	tcase_add_test(tcase, _vec_add);
 	tcase_add_test(tcase, _vec_dot);
 	tcase_add_test(tcase, _vec_normalize);
+	tcase_add_test(tcase, _vec_scale_add);
 
 	Suite *suite = suite_create("benchmark");
 	suite_add_tcase(suite, tcase);
