@@ -56,7 +56,7 @@ static vec *random_vectors(size_t count) {
 
 START_TEST(_vec_add) {
 
-	const int iterations = 1000000;
+	const int iterations = 10000000;
 	vec *v = random_vectors(iterations);
 
 	TIME_BLOCK("Vector add", {
@@ -79,14 +79,6 @@ START_TEST(_vec_add) {
 		}
 	});
 
-	TIME_BLOCK("Vector add SSE2", {
-		for (int i = 0; i < iterations; i++) {
-			const __m128 a = v[(i + 0) % iterations].vec;
-			const __m128 b = v[(i + 1) % iterations].vec;
-			v[(i + 2) % iterations].vec = _mm_add_ps(a, b);
-		}
-	});
-
 	free(v);
 
 } END_TEST
@@ -95,7 +87,7 @@ START_TEST(_vec_add) {
 
 START_TEST(_vec_dot) {
 
-	const int iterations = 1000000;
+	const int iterations = 10000000;
 	vec *v = random_vectors(iterations);
 
 	TIME_BLOCK("Dot product", {
@@ -125,12 +117,12 @@ START_TEST(_vec_dot) {
 
 static inline vec VectorNormalize(vec v) {
 
-	const float length = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	const float length = sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 	if (length) {
 		const float ilength = 1.0 / length;
-		v.x *= ilength;
-		v.y *= ilength;
-		v.z *= ilength;
+		v[0] *= ilength;
+		v[1] *= ilength;
+		v[2] *= ilength;
 	}
 
 	return v;
@@ -138,7 +130,7 @@ static inline vec VectorNormalize(vec v) {
 
 START_TEST(_vec_normalize) {
 
-	const int iterations = 1000000;
+	const int iterations = 10000000;
 	vec *v = random_vectors(iterations);
 
 	TIME_BLOCK("Vector normalize", {
@@ -170,12 +162,12 @@ START_TEST(_vec_normalize) {
 } END_TEST
 
 static vec VectorScaleAdd(const vec a, const vec b, float scale) {
-	return vec3(a.x + scale * b.x, a.y + scale * b.y, a.z + scale * b.z);
+	return vec3(a[0] + scale * b[0], a[1] + scale * b[1], a[2] + scale * b[2]);
 }
 
 START_TEST(_vec_scale_add) {
 
-	const int iterations = 1000000;
+	const int iterations = 10000000;
 	vec *v = random_vectors(iterations);
 
 	TIME_BLOCK("Vector scale add", {

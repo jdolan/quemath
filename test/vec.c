@@ -40,12 +40,14 @@ static inline void assert_flt_eq(float a, float b, float epsilon) {
 
 static inline void assert_ivec_eq(const ivec a, const ivec b) {
 	ck_assert_msg(ivec_equals(a, b), "(%d %d %d %d) == (%d %d %d %d)",
-				  a.i, a.j, a.k, a.l, b.i, b.j, b.k, b.l);
+				  ivec_x(a), ivec_y(a), ivec_z(a), ivec_w(a),
+				  ivec_x(b), ivec_y(b), ivec_z(b), ivec_w(b));
 }
 
 static inline void assert_vec_eq(const vec a, const vec b) {
 	ck_assert_msg(vec_equals(a, b), "(%g, %g, %g, %g) == (%g, %g, %g, %g)",
-				  a.x, a.y, a.z, a.w, b.x, b.y, b.z, b.w);
+				  vec_x(a), vec_y(a), vec_z(a), vec_w(a),
+				  vec_x(b), vec_y(b), vec_z(b), vec_w(b));
 }
 
 START_TEST(_vec0) {
@@ -151,10 +153,10 @@ START_TEST(_vec_normalize) {
 } END_TEST
 
 START_TEST(_vec_normalize_fast) {
-	assert_flt_eq(1, vec_length(vec_normalize_fast(vec3(1, 0, 0))).x, 0.001);
-	assert_flt_eq(1, vec_length(vec_normalize_fast(vec3(2, 0, 0))).x, 0.001);
-	assert_flt_eq(1, vec_length(vec_normalize_fast(vec3(1, 2, 3))).x, 0.001);
-	assert_flt_eq(1, vec_length(vec_normalize_fast(vec3(2, 0, 2))).x, 0.001);
+	assert_flt_eq(1, vec_x(vec_length(vec_normalize_fast(vec3(1, 0, 0)))), 0.001);
+	assert_flt_eq(1, vec_x(vec_length(vec_normalize_fast(vec3(2, 0, 0)))), 0.001);
+	assert_flt_eq(1, vec_x(vec_length(vec_normalize_fast(vec3(1, 2, 3)))), 0.001);
+	assert_flt_eq(1, vec_x(vec_length(vec_normalize_fast(vec3(2, 0, 2)))), 0.001);
 } END_TEST
 
 START_TEST(_vec_not_equal) {
@@ -192,10 +194,10 @@ START_TEST(_vec_random_range) {
 
 START_TEST(_vec_rsqrt) {
 	const vec v = vec_rsqrt(vec4(1, 2, 3, 4));
-	assert_flt_eq(1 / sqrtf(1), v.x, 0.001);
-	assert_flt_eq(1 / sqrtf(2), v.y, 0.001);
-	assert_flt_eq(1 / sqrtf(3), v.z, 0.001);
-	assert_flt_eq(1 / sqrtf(4), v.w, 0.001);
+	assert_flt_eq(1 / sqrtf(1), vec_x(v), 0.001);
+	assert_flt_eq(1 / sqrtf(2), vec_y(v), 0.001);
+	assert_flt_eq(1 / sqrtf(3), vec_z(v), 0.001);
+	assert_flt_eq(1 / sqrtf(4), vec_w(v), 0.001);
 } END_TEST
 
 START_TEST(_vec_scale) {
@@ -222,10 +224,12 @@ START_TEST(_vec_subtract) {
 	assert_vec_eq(vec_subtract(vec3(1, 2, 3), vec3(2, 3, 4)), vec3(-1, -1, -1));
 } END_TEST
 
-START_TEST(_vec_sum) {
-	assert_vec_eq(vec1(0), vec_sum(vec3(0, 0, 0)));
-	assert_vec_eq(vec1(3), vec_sum(vec3(1, 1, 1)));
-	assert_vec_eq(vec1(6), vec_sum(vec3(1, 2, 3)));
+START_TEST(_vec_yzx) {
+	assert_vec_eq(vec4(2, 3, 1, 4), vec_yzx(vec4(1, 2, 3, 4)));
+} END_TEST
+
+START_TEST(_vec_zxy) {
+	assert_vec_eq(vec4(3, 1, 2, 4), vec_zxy(vec4(1, 2, 3, 4)));
 } END_TEST
 
 int main(int argc, char **argv) {
@@ -263,7 +267,8 @@ int main(int argc, char **argv) {
 	tcase_add_test(tcase, _vec_scale_add);
 	tcase_add_test(tcase, _vec_sqrt);
 	tcase_add_test(tcase, _vec_subtract);
-	tcase_add_test(tcase, _vec_sum);
+	tcase_add_test(tcase, _vec_yzx);
+	tcase_add_test(tcase, _vec_zxy);
 
 	Suite *suite = suite_create("vec");
 	suite_add_tcase(suite, tcase);

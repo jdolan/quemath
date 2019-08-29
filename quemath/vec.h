@@ -31,27 +31,7 @@
 /**
  * @brief Four component floating point SSE vector type.
  */
-typedef union {
-	/**
-	 * @brief The 128 bit floating point SSE vector.
-	 */
-	__m128 vec;
-
-	/**
-	 * @brief Component accessors.
-	 */
-	struct {
-		float x, y, z, w;
-	};
-
-	/**
-	 * @brief Tangent space component accessors.
-	 */
-	struct {
-		float s, t, u, v;
-	};
-} vec;
-
+typedef __m128 vec;
 
 static inline vec vec0(void);
 static inline vec vec1(float x);
@@ -92,14 +72,19 @@ static inline vec vec_scale(const vec v, float scale);
 static inline vec vec_scale_add(const vec a, const vec b, float scale);
 static inline vec vec_sqrt(const vec v);
 static inline vec vec_subtract(const vec a, const vec b);
-static inline vec vec_sum(const vec v);
+static inline float vec_x(const vec v);
+static inline float vec_y(const vec v);
+static inline float vec_z(const vec v);
+static inline float vec_w(const vec v);
+static inline vec vec_yzx(const vec v);
+static inline vec vec_zxy(const vec v);
 
 static vec vec0(void) {
-	return (vec) _mm_setzero_ps();
+	return _mm_setzero_ps();
 }
 
 static vec vec1(float x) {
-	return (vec) _mm_set_ss(x);
+	return _mm_set_ss(x);
 }
 
 static vec vec2(float x, float y) {
@@ -111,34 +96,34 @@ static vec vec3(float x, float y, float z) {
 }
 
 static vec vec4(float x, float y, float z, float w) {
-	return (vec) _mm_setr_ps(x, y, z, w);
+	return _mm_setr_ps(x, y, z, w);
 }
 
 static vec vec_add(const vec a, const vec b) {
-	return (vec) _mm_add_ps(a.vec, b.vec);
+	return _mm_add_ps(a, b);
 }
 
 static ivec ivec_cast_vec(const vec v) {
-	return (ivec) _mm_castps_si128(v.vec);
+	return (ivec) _mm_castps_si128(v);
 }
 
 static vec vec_cast_ivec(const ivec v) {
-	return (vec) _mm_castsi128_ps(v.ivec);
+	return _mm_castsi128_ps(v);
 }
 
 static ivec ivec_convert_vec(const vec v) {
-	return (ivec) _mm_cvtps_epi32(v.vec);
+	return (ivec) _mm_cvtps_epi32(v);
 }
 
 static vec vec_convert_ivec(const ivec v) {
-	return (vec) _mm_cvtepi32_ps(v.ivec);
+	return _mm_cvtepi32_ps(v);
 }
 
 static vec vec_cross(const vec a, const vec b) {
 	// https://www.mathsisfun.com/algebra/vectors-cross-product.html
 	return vec_subtract(
-		vec_multiply(vec3(a.y, a.z, a.x), vec3(b.z, b.x, b.y)),
-		vec_multiply(vec3(a.z, a.x, a.y), vec3(b.y, b.z, b.x))
+		vec_multiply(vec_yzx(a), vec_zxy(b)),
+		vec_multiply(vec_zxy(a), vec_yzx(b))
 	);
 }
 
@@ -151,47 +136,47 @@ static vec vec_distance(const vec a, const vec b) {
 }
 
 static vec vec_divide(const vec a, const vec b) {
-	return (vec) _mm_div_ps(a.vec, b.vec);
+	return _mm_div_ps(a, b);
 }
 
 static vec vec_dot(const vec a, const vec b) {
-	return (vec) _mm_dp_ps(a.vec, b.vec, 0x71);
+	return _mm_dp_ps(a, b, 0x71);
 }
 
 static ivec vec_equal(const vec a, const vec b) {
-	return ivec_cast_vec((vec) _mm_cmpeq_ps(a.vec, b.vec));
+	return ivec_cast_vec(_mm_cmpeq_ps(a, b));
 }
 
 static int vec_equals(const vec a, const vec b) {
-	return ivec_equals(vec_equal(a, b), ivec_true());
+	return _mm_testc_si128(vec_equal(a, b), ivec_true());
 }
 
 static ivec vec_greater_than(const vec a, const vec b) {
-	return ivec_cast_vec((vec) _mm_cmpgt_ps(a.vec, b.vec));
+	return ivec_cast_vec(_mm_cmpgt_ps(a, b));
 }
 
 static ivec vec_greater_than_equal(const vec a, const vec b) {
-	return ivec_cast_vec((vec) _mm_cmpge_ps(a.vec, b.vec));
+	return ivec_cast_vec(_mm_cmpge_ps(a, b));
 }
 
 static vec vec_length(const vec v) {
-	return (vec) _mm_sqrt_ss(vec_dot(v, v).vec);
+	return _mm_sqrt_ss(vec_dot(v, v));
 }
 
 static ivec vec_less_than(const vec a, const vec b) {
-	return ivec_cast_vec((vec) _mm_cmplt_ps(a.vec, b.vec));
+	return ivec_cast_vec(_mm_cmplt_ps(a, b));
 }
 
 static ivec vec_less_than_equal(const vec a, const vec b) {
-	return ivec_cast_vec((vec) _mm_cmple_ps(a.vec, b.vec));
+	return ivec_cast_vec(_mm_cmple_ps(a, b));
 }
 
 static vec vec_max(const vec a, const vec b) {
-	return (vec) _mm_max_ps(a.vec, b.vec);
+	return _mm_max_ps(a, b);
 }
 
 static vec vec_min(const vec a, const vec b) {
-	return (vec) _mm_min_ps(a.vec, b.vec);
+	return _mm_min_ps(a, b);
 }
 
 static vec vec_mix(const vec a, const vec b, float mix) {
@@ -199,7 +184,7 @@ static vec vec_mix(const vec a, const vec b, float mix) {
 }
 
 static vec vec_multiply(const vec a, const vec b) {
-	return (vec) _mm_mul_ps(a.vec, b.vec);
+	return _mm_mul_ps(a, b);
 }
 
 static vec vec_negate(const vec v) {
@@ -207,19 +192,19 @@ static vec vec_negate(const vec v) {
 }
 
 static vec vec_new(float f) {
-	return (vec) _mm_set1_ps(f);
+	return _mm_set1_ps(f);
 }
 
 static vec vec_normalize(const vec v) {
-	return (vec) _mm_div_ps(v.vec, _mm_sqrt_ps(_mm_dp_ps(v.vec, v.vec, 0x7F)));
+	return _mm_div_ps(v, _mm_sqrt_ps(_mm_dp_ps(v, v, 0x7F)));
 }
 
 static vec vec_normalize_fast(const vec v) {
-	return (vec) _mm_mul_ps(v.vec, _mm_rsqrt_ps(_mm_dp_ps(v.vec, v.vec, 0x7F)));
+	return _mm_mul_ps(v, _mm_rsqrt_ps(_mm_dp_ps(v, v, 0x7F)));
 }
 
 static ivec vec_not_equal(const vec a, const vec b) {
-	return ivec_cast_vec((vec) _mm_cmpneq_ps(a.vec, b.vec));
+	return ivec_cast_vec(_mm_cmpneq_ps(a, b));
 }
 
 static vec vec_radians(const vec degrees) {
@@ -240,11 +225,11 @@ static vec vec_random_range(vec *state, const vec mins, const vec maxs) {
 }
 
 static vec vec_rsqrt(const vec v) {
-	return (vec) _mm_rsqrt_ps(v.vec);
+	return _mm_rsqrt_ps(v);
 }
 
 static vec vec_scale(const vec v, float scale) {
-	return (vec) _mm_mul_ps(v.vec, _mm_set1_ps(scale));
+	return _mm_mul_ps(v, _mm_set1_ps(scale));
 }
 
 static vec vec_scale_add(const vec a, const vec b, float scale) {
@@ -252,13 +237,34 @@ static vec vec_scale_add(const vec a, const vec b, float scale) {
 }
 
 static vec vec_sqrt(const vec v) {
-	return (vec) _mm_sqrt_ps(v.vec);
+	return _mm_sqrt_ps(v);
 }
 
 static vec vec_subtract(const vec a, const vec b) {
-	return (vec) _mm_sub_ps(a.vec, b.vec);
+	return _mm_sub_ps(a, b);
 }
 
-static vec vec_sum(const vec v) {
-	return vec1(v.x + v.y + v.z + v.w);
+static float vec_x(const vec v) {
+	return _mm_cvtss_f32(v);
 }
+
+static float vec_y(const vec v) {
+	return _mm_cvtss_f32(_mm_shuffle_ps(v, v, _MM_SHUFFLE(1, 1, 1, 1)));
+}
+
+static float vec_z(const vec v) {
+	return _mm_cvtss_f32(_mm_shuffle_ps(v, v, _MM_SHUFFLE(2, 2, 2, 2)));
+}
+
+static float vec_w(const vec v) {
+	return _mm_cvtss_f32(_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 3, 3, 3)));
+}
+
+static vec vec_yzx(const vec v) {
+	return _mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 0, 2, 1));
+}
+
+static vec vec_zxy(const vec v) {
+	return _mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 1, 0, 2));
+}
+

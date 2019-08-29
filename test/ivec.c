@@ -28,15 +28,12 @@
 
 static inline void assert_ivec_eq(const ivec a, const ivec b) {
 	ck_assert_msg(ivec_equals(a, b), "(%d %d %d %d) == (%d %d %d %d)",
-				  a.i, a.j, a.k, a.l, b.i, b.j, b.k, b.l);
+				  ivec_x(a), ivec_y(a), ivec_z(a), ivec_w(a),
+				  ivec_x(b), ivec_y(b), ivec_z(b), ivec_w(b));
 }
 
 START_TEST(_ivec0) {
-	const ivec v = ivec0();
-	ck_assert_int_eq(0, v.i);
-	ck_assert_int_eq(0, v.j);
-	ck_assert_int_eq(0, v.k);
-	ck_assert_int_eq(0, v.l);
+	assert_ivec_eq(ivec4(0, 0, 0, 0), ivec0());
 } END_TEST
 
 START_TEST(_ivec1) {
@@ -83,26 +80,26 @@ START_TEST(_ivec_less_than) {
 
 START_TEST(_ivec_random) {
 
-	ivec mins = ivec_new(RAND_MAX), maxs = ivec_new(0);
+	ivec min = ivec_new(RAND_MAX), max = ivec_new(0);
 
 	ivec state = ivec4(0xfeed, 0xdad, 0xdead, 0xbeef);
 
 	const int iterations = 1000;
 	for (int i = 0; i < iterations; i++) {
 		const ivec r = ivec_random(&state);
-		mins = ivec_min(r, mins);
-		maxs = ivec_max(r, maxs);
+		min = ivec_min(r, min);
+		max = ivec_max(r, max);
 	}
 
-	ck_assert_int_lt(mins.i, RAND_MAX);
-	ck_assert_int_lt(mins.j, RAND_MAX);
-	ck_assert_int_lt(mins.k, RAND_MAX);
-	ck_assert_int_lt(mins.l, RAND_MAX);
+	ck_assert_int_lt(ivec_x(min), RAND_MAX);
+	ck_assert_int_lt(ivec_y(min), RAND_MAX);
+	ck_assert_int_lt(ivec_z(min), RAND_MAX);
+	ck_assert_int_lt(ivec_w(min), RAND_MAX);
 
-	ck_assert_int_gt(maxs.i, 0);
-	ck_assert_int_gt(maxs.j, 0);
-	ck_assert_int_gt(maxs.k, 0);
-	ck_assert_int_gt(maxs.l, 0);
+	ck_assert_int_gt(ivec_x(max), 0);
+	ck_assert_int_gt(ivec_y(max), 0);
+	ck_assert_int_gt(ivec_z(max), 0);
+	ck_assert_int_gt(ivec_w(max), 0);
 
 } END_TEST
 
@@ -114,15 +111,15 @@ START_TEST(_ivec_random_range) {
 	for (int i = 0; i < iterations; i++) {
 		const ivec r = ivec_random_range(&state, ivec_new(i), ivec_new(iterations));
 
-		ck_assert_int_ge(r.i, i);
-		ck_assert_int_ge(r.j, i);
-		ck_assert_int_ge(r.k, i);
-		ck_assert_int_ge(r.l, i);
+		ck_assert_int_ge(ivec_x(r), i);
+		ck_assert_int_ge(ivec_y(r), i);
+		ck_assert_int_ge(ivec_z(r), i);
+		ck_assert_int_ge(ivec_w(r), i);
 
-		ck_assert_int_lt(r.i, iterations);
-		ck_assert_int_lt(r.j, iterations);
-		ck_assert_int_lt(r.k, iterations);
-		ck_assert_int_lt(r.l, iterations);
+		ck_assert_int_lt(ivec_x(r), iterations);
+		ck_assert_int_lt(ivec_y(r), iterations);
+		ck_assert_int_lt(ivec_z(r), iterations);
+		ck_assert_int_lt(ivec_w(r), iterations);
 	}
 
 } END_TEST
@@ -138,6 +135,9 @@ int main(int argc, char **argv) {
 	tcase_add_test(tcase, _ivec4);
 	tcase_add_test(tcase, _ivec_abs);
 	tcase_add_test(tcase, _ivec_add);
+	tcase_add_test(tcase, _ivec_equal);
+	tcase_add_test(tcase, _ivec_greater_than);
+	tcase_add_test(tcase, _ivec_less_than);
 	tcase_add_test(tcase, _ivec_random);
 	tcase_add_test(tcase, _ivec_random_range);
 
