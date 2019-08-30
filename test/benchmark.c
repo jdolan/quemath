@@ -115,7 +115,7 @@ START_TEST(_vec_dot) {
 
 } END_TEST
 
-static inline vec VectorNormalize(vec v) {
+static vec VectorNormalize(vec v) {
 
 	const float length = sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 	if (length) {

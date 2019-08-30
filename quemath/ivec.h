@@ -48,8 +48,8 @@ static inline ivec ivec_min(const ivec a, const ivec b);
 static inline ivec ivec_modulo(const ivec a, const ivec b);
 static inline ivec ivec_multiply(const ivec a, const ivec b);
 static inline ivec ivec_new(int x);
-static inline ivec ivec_random(ivec *state);
-static inline ivec ivec_random_range(ivec *state, ivec mins, ivec maxs);
+static inline ivec ivec_random(ivec last);
+static inline ivec ivec_random_range(ivec last, ivec mins, ivec maxs);
 static inline ivec ivec_subtract(const ivec a, const ivec b);
 static inline ivec ivec_true(void);
 static inline int ivec_x(const ivec v);
@@ -128,17 +128,16 @@ static ivec ivec_new(int x) {
 	return _mm_set1_epi32(x);
 }
 
-static ivec ivec_random(ivec *state) {
-	ivec r = *state;
-	r = _mm_xor_si128(r, _mm_slli_epi32(r, 13));
-	r = _mm_xor_si128(r, _mm_srli_epi32(r, 17));
-	r = _mm_xor_si128(r, _mm_slli_epi32(r,  5));
-	r = _mm_and_si128(r, _mm_set1_epi32(RAND_MAX));
-	return *state = r;
+static ivec ivec_random(ivec last) {
+	last = _mm_xor_si128(last, _mm_slli_epi32(last, 13));
+	last = _mm_xor_si128(last, _mm_srli_epi32(last, 17));
+	last = _mm_xor_si128(last, _mm_slli_epi32(last,  5));
+	last = _mm_and_si128(last, _mm_set1_epi32(RAND_MAX));
+	return last;
 }
 
-static ivec ivec_random_range(ivec *state, ivec mins, ivec maxs) {
-	return ivec_add(mins, ivec_modulo(ivec_random(state), ivec_subtract(maxs, mins)));
+static ivec ivec_random_range(ivec last, ivec mins, ivec maxs) {
+	return ivec_add(mins, ivec_modulo(ivec_random(last), ivec_subtract(maxs, mins)));
 }
 
 static ivec ivec_subtract(const ivec a, const ivec b) {

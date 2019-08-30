@@ -65,8 +65,8 @@ static inline vec vec_normalize(const vec v);
 static inline vec vec_normalize_fast(const vec v);
 static inline ivec vec_not_equal(const vec a, const vec b);
 static inline vec vec_radians(const vec degrees);
-static inline vec vec_random(vec *state);
-static inline vec vec_random_range(vec *state, const vec mins, const vec maxs);
+static inline vec vec_random(vec last);
+static inline vec vec_random_range(vec last, const vec mins, const vec maxs);
 static inline vec vec_rsqrt(const vec v);
 static inline vec vec_scale(const vec v, float scale);
 static inline vec vec_scale_add(const vec a, const vec b, float scale);
@@ -211,17 +211,12 @@ static vec vec_radians(const vec degrees) {
 	return vec_scale(degrees, M_PI / 180);
 }
 
-static vec vec_random(vec *state) {
-	ivec s = ivec_cast_vec(*state);
-	ivec r = ivec_random(&s);
-
-	*state = vec_cast_ivec(r);
-
-	return vec_scale(vec_convert_ivec(r), 1.0 / RAND_MAX);
+static vec vec_random(vec last) {
+	return vec_scale(vec_convert_ivec(ivec_random(ivec_cast_vec(last))), 1.0 / RAND_MAX);
 }
 
-static vec vec_random_range(vec *state, const vec mins, const vec maxs) {
-	return vec_add(mins, vec_multiply(vec_subtract(maxs, mins), vec_random(state)));
+static vec vec_random_range(vec last, const vec mins, const vec maxs) {
+	return vec_add(mins, vec_multiply(vec_subtract(maxs, mins), vec_random(last)));
 }
 
 static vec vec_rsqrt(const vec v) {

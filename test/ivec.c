@@ -32,6 +32,14 @@ static inline void assert_ivec_eq(const ivec a, const ivec b) {
 				  ivec_x(b), ivec_y(b), ivec_z(b), ivec_w(b));
 }
 
+static inline void assert_ivec_true(const ivec v) {
+	assert_ivec_eq(ivec_true(), v);
+}
+
+static inline void assert_ivec_false(const ivec v) {
+	assert_ivec_eq(ivec_false(), v);
+}
+
 START_TEST(_ivec0) {
 	assert_ivec_eq(ivec4(0, 0, 0, 0), ivec0());
 } END_TEST
@@ -61,34 +69,34 @@ START_TEST(_ivec_add) {
 } END_TEST
 
 START_TEST(_ivec_equal) {
-	assert_ivec_eq(ivec_true(), ivec_equal(ivec_new(1), ivec_new(1)));
-	assert_ivec_eq(ivec_true(), ivec_equal(ivec3(1, 2, 3), ivec3(1, 2, 3)));
-	assert_ivec_eq(ivec_false(), ivec_equal(ivec_new(1), ivec_new(2)));
+	assert_ivec_true(ivec_equal(ivec_new(1), ivec_new(1)));
+	assert_ivec_true(ivec_equal(ivec3(1, 2, 3), ivec3(1, 2, 3)));
+	assert_ivec_false(ivec_equal(ivec_new(1), ivec_new(2)));
 } END_TEST
 
 START_TEST(_ivec_greater_than) {
-	assert_ivec_eq(ivec_true(), ivec_greater_than(ivec_new(1), ivec_new(0)));
-	assert_ivec_eq(ivec_false(), ivec_greater_than(ivec_new(0), ivec_new(1)));
-	assert_ivec_eq(ivec_false(), ivec_greater_than(ivec_new(0), ivec_new(0)));
+	assert_ivec_true(ivec_greater_than(ivec_new(1), ivec_new(0)));
+	assert_ivec_false(ivec_greater_than(ivec_new(0), ivec_new(1)));
+	assert_ivec_false(ivec_greater_than(ivec_new(0), ivec_new(0)));
 } END_TEST
 
 START_TEST(_ivec_less_than) {
-	assert_ivec_eq(ivec_true(), ivec_less_than(ivec_new(0), ivec_new(1)));
-	assert_ivec_eq(ivec_false(), ivec_less_than(ivec_new(1), ivec_new(0)));
-	assert_ivec_eq(ivec_false(), ivec_less_than(ivec_new(0), ivec_new(0)));
+	assert_ivec_true(ivec_less_than(ivec_new(0), ivec_new(1)));
+	assert_ivec_false(ivec_less_than(ivec_new(1), ivec_new(0)));
+	assert_ivec_false(ivec_less_than(ivec_new(0), ivec_new(0)));
 } END_TEST
 
 START_TEST(_ivec_random) {
 
 	ivec min = ivec_new(RAND_MAX), max = ivec_new(0);
 
-	ivec state = ivec4(0xfeed, 0xdad, 0xdead, 0xbeef);
+	ivec rand = ivec4(0xfeed, 0xdad, 0xdead, 0xbeef);
 
 	const int iterations = 1000;
 	for (int i = 0; i < iterations; i++) {
-		const ivec r = ivec_random(&state);
-		min = ivec_min(r, min);
-		max = ivec_max(r, max);
+		rand = ivec_random(rand);
+		min = ivec_min(rand, min);
+		max = ivec_max(rand, max);
 	}
 
 	ck_assert_int_lt(ivec_x(min), RAND_MAX);
@@ -105,21 +113,21 @@ START_TEST(_ivec_random) {
 
 START_TEST(_ivec_random_range) {
 
-	ivec state = ivec4(0xfeed, 0xdad, 0xdead, 0xbeef);
+	ivec rand = ivec4(0xfeed, 0xdad, 0xdead, 0xbeef);
 
 	const int iterations = 1000;
 	for (int i = 0; i < iterations; i++) {
-		const ivec r = ivec_random_range(&state, ivec_new(i), ivec_new(iterations));
+		rand = ivec_random_range(rand, ivec_new(i), ivec_new(iterations));
 
-		ck_assert_int_ge(ivec_x(r), i);
-		ck_assert_int_ge(ivec_y(r), i);
-		ck_assert_int_ge(ivec_z(r), i);
-		ck_assert_int_ge(ivec_w(r), i);
+		ck_assert_int_ge(ivec_x(rand), i);
+		ck_assert_int_ge(ivec_y(rand), i);
+		ck_assert_int_ge(ivec_z(rand), i);
+		ck_assert_int_ge(ivec_w(rand), i);
 
-		ck_assert_int_lt(ivec_x(r), iterations);
-		ck_assert_int_lt(ivec_y(r), iterations);
-		ck_assert_int_lt(ivec_z(r), iterations);
-		ck_assert_int_lt(ivec_w(r), iterations);
+		ck_assert_int_lt(ivec_x(rand), iterations);
+		ck_assert_int_lt(ivec_y(rand), iterations);
+		ck_assert_int_lt(ivec_z(rand), iterations);
+		ck_assert_int_lt(ivec_w(rand), iterations);
 	}
 
 } END_TEST

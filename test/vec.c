@@ -44,6 +44,14 @@ static inline void assert_ivec_eq(const ivec a, const ivec b) {
 				  ivec_x(b), ivec_y(b), ivec_z(b), ivec_w(b));
 }
 
+static inline void assert_ivec_true(const ivec v) {
+	assert_ivec_eq(ivec_true(), v);
+}
+
+static inline void assert_ivec_false(const ivec v) {
+	assert_ivec_eq(ivec_false(), v);
+}
+
 static inline void assert_vec_eq(const vec a, const vec b) {
 	ck_assert_msg(vec_equals(a, b), "(%g, %g, %g, %g) == (%g, %g, %g, %g)",
 				  vec_x(a), vec_y(a), vec_z(a), vec_w(a),
@@ -97,21 +105,21 @@ START_TEST(_vec_dot) {
 } END_TEST
 
 START_TEST(_vec_equal) {
-	assert_ivec_eq(ivec_true(), vec_equal(vec_new(1), vec_new(1)));
-	assert_ivec_eq(ivec_true(), vec_equal(vec3(1, 2, 3), vec3(1, 2, 3)));
-	assert_ivec_eq(ivec_false(), vec_equal(vec_new(1), vec_new(2)));
+	assert_ivec_true(vec_equal(vec_new(1), vec_new(1)));
+	assert_ivec_true(vec_equal(vec3(1, 2, 3), vec3(1, 2, 3)));
+	assert_ivec_false(vec_equal(vec_new(1), vec_new(2)));
 } END_TEST
 
 START_TEST(_vec_greater_than) {
-	assert_ivec_eq(ivec_true(), vec_greater_than(vec_new(1), vec_new(0)));
-	assert_ivec_eq(ivec_false(), vec_greater_than(vec_new(0), vec_new(1)));
-	assert_ivec_eq(ivec_false(), vec_greater_than(vec_new(0), vec_new(0)));
+	assert_ivec_true(vec_greater_than(vec_new(1), vec_new(0)));
+	assert_ivec_false(vec_greater_than(vec_new(0), vec_new(1)));
+	assert_ivec_false(vec_greater_than(vec_new(0), vec_new(0)));
 } END_TEST
 
 START_TEST(_vec_greater_than_equal) {
-	assert_ivec_eq(ivec_true(), vec_greater_than_equal(vec_new(1), vec_new(0)));
-	assert_ivec_eq(ivec_false(), vec_greater_than_equal(vec_new(0), vec_new(1)));
-	assert_ivec_eq(ivec_true(), vec_greater_than_equal(vec_new(0), vec_new(0)));
+	assert_ivec_true(vec_greater_than_equal(vec_new(1), vec_new(0)));
+	assert_ivec_false(vec_greater_than_equal(vec_new(0), vec_new(1)));
+	assert_ivec_true(vec_greater_than_equal(vec_new(0), vec_new(0)));
 } END_TEST
 
 START_TEST(_vec_length) {
@@ -121,15 +129,15 @@ START_TEST(_vec_length) {
 } END_TEST
 
 START_TEST(_vec_less_than) {
-	assert_ivec_eq(ivec_true(), vec_less_than(vec_new(0), vec_new(1)));
-	assert_ivec_eq(ivec_false(), vec_less_than(vec_new(1), vec_new(0)));
-	assert_ivec_eq(ivec_false(), vec_less_than(vec_new(0), vec_new(0)));
+	assert_ivec_true(vec_less_than(vec_new(0), vec_new(1)));
+	assert_ivec_false(vec_less_than(vec_new(1), vec_new(0)));
+	assert_ivec_false(vec_less_than(vec_new(0), vec_new(0)));
 } END_TEST
 
 START_TEST(_vec_less_than_equal) {
-	assert_ivec_eq(ivec_true(), vec_less_than_equal(vec_new(0), vec_new(1)));
-	assert_ivec_eq(ivec_false(), vec_less_than_equal(vec_new(1), vec_new(0)));
-	assert_ivec_eq(ivec_true(), vec_less_than_equal(vec_new(0), vec_new(0)));
+	assert_ivec_true(vec_less_than_equal(vec_new(0), vec_new(1)));
+	assert_ivec_false(vec_less_than_equal(vec_new(1), vec_new(0)));
+	assert_ivec_true(vec_less_than_equal(vec_new(0), vec_new(0)));
 } END_TEST
 
 START_TEST(_vec_mix) {
@@ -160,8 +168,8 @@ START_TEST(_vec_normalize_fast) {
 } END_TEST
 
 START_TEST(_vec_not_equal) {
-	assert_ivec_eq(ivec_true(), vec_not_equal(vec_new(0), vec_new(1)));
-	assert_ivec_eq(ivec_false(), vec_not_equal(vec_new(1), vec_new(1)));
+	assert_ivec_true(vec_not_equal(vec_new(0), vec_new(1)));
+	assert_ivec_false(vec_not_equal(vec_new(1), vec_new(1)));
 } END_TEST
 
 START_TEST(_vec_radians) {
@@ -171,24 +179,24 @@ START_TEST(_vec_radians) {
 } END_TEST
 
 START_TEST(_vec_random) {
-	vec state = vec4(0xfeed, 0xdad, 0xdead, 0xbeef);
+	vec rand = vec4(0xfeed, 0xdad, 0xdead, 0xbeef);
 
 	const int iterations = 1000;
 	for (int i = 0; i < iterations; i++) {
-		const vec r = vec_random(&state);
-		assert_ivec_eq(ivec_true(), vec_greater_than_equal(r, vec_new(0)));
-		assert_ivec_eq(ivec_true(), vec_less_than(r, vec_new(1)));
+		rand = vec_random(rand);
+		assert_ivec_true(vec_greater_than_equal(rand, vec_new(0)));
+		assert_ivec_true(vec_less_than(rand, vec_new(1)));
 	}
 } END_TEST
 
 START_TEST(_vec_random_range) {
-	vec state = vec4(0xfeed, 0xdad, 0xdead, 0xbeef);
+	vec rand = vec4(0xfeed, 0xdad, 0xdead, 0xbeef);
 
 	const int iterations = 1000;
 	for (int i = 0; i < iterations; i++) {
-		const vec r = vec_random_range(&state, vec_new(i), vec_new(iterations));
-		assert_ivec_eq(ivec_true(), vec_greater_than_equal(r, vec_new(i)));
-		assert_ivec_eq(ivec_true(), vec_less_than(r, vec_new(iterations)));
+		rand = vec_random_range(rand, vec_new(i), vec_new(iterations));
+		assert_ivec_true(vec_greater_than_equal(rand, vec_new(i)));
+		assert_ivec_true(vec_less_than(rand, vec_new(iterations)));
 	}
 } END_TEST
 
