@@ -18,6 +18,8 @@
 		CE99A72A23140B2E00E328F6 /* benchmark.c in Sources */ = {isa = PBXBuildFile; fileRef = CE99A72923140B2E00E328F6 /* benchmark.c */; };
 		CE99A730231415D900E328F6 /* libcheck.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE99A7172310143900E328F6 /* libcheck.0.dylib */; };
 		CE99A736231415E600E328F6 /* ivec.c in Sources */ = {isa = PBXBuildFile; fileRef = CE99A72B231415BA00E328F6 /* ivec.c */; };
+		CE99A73E23197F4200E328F6 /* libcheck.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE99A7172310143900E328F6 /* libcheck.0.dylib */; };
+		CE99A74423197F5800E328F6 /* quat.c in Sources */ = {isa = PBXBuildFile; fileRef = CE99A73923197F2400E328F6 /* quat.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,6 +50,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		CE99A73F23197F4200E328F6 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +81,11 @@
 		CE99A72923140B2E00E328F6 /* benchmark.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = benchmark.c; sourceTree = "<group>"; };
 		CE99A72B231415BA00E328F6 /* ivec.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ivec.c; sourceTree = "<group>"; };
 		CE99A735231415D900E328F6 /* quemath-ivec */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "quemath-ivec"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE99A73923197F2400E328F6 /* quat.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = quat.c; sourceTree = "<group>"; };
+		CE99A74323197F4200E328F6 /* quemath-quat */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "quemath-quat"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE99A745231D4C1900E328F6 /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
+		CE99A747231D4E9A00E328F6 /* style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
+		CE99A748231D50F100E328F6 /* layout.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = layout.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,17 +120,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CE99A73D23197F4200E328F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE99A73E23197F4200E328F6 /* libcheck.0.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		CE99A6E923100CBC00E328F6 = {
 			isa = PBXGroup;
 			children = (
-				CE99A71C23101EDB00E328F6 /* README.md */,
+				CE99A746231D4E9A00E328F6 /* doc */,
 				CE99A7062310133800E328F6 /* quemath */,
 				CE99A7072310133800E328F6 /* test */,
 				CE99A6F923100D7200E328F6 /* configure.ac */,
+				CE99A745231D4C1900E328F6 /* Doxyfile */,
 				CE99A6FA23100D7200E328F6 /* Makefile.am */,
+				CE99A71C23101EDB00E328F6 /* README.md */,
 				CE99A6F323100CBC00E328F6 /* Products */,
 				CE99A7162310143900E328F6 /* Frameworks */,
 			);
@@ -127,6 +153,7 @@
 				CE99A70E2310141000E328F6 /* quemath-vec */,
 				CE99A72823140B1300E328F6 /* quemath-benchmark */,
 				CE99A735231415D900E328F6 /* quemath-ivec */,
+				CE99A74323197F4200E328F6 /* quemath-quat */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,6 +177,7 @@
 				CE99A72923140B2E00E328F6 /* benchmark.c */,
 				CE99A72B231415BA00E328F6 /* ivec.c */,
 				CE99A709231013C700E328F6 /* mat.c */,
+				CE99A73923197F2400E328F6 /* quat.c */,
 				CE99A708231013C700E328F6 /* vec.c */,
 				CE99A71E2310223B00E328F6 /* Makefile.am */,
 			);
@@ -162,6 +190,15 @@
 				CE99A7172310143900E328F6 /* libcheck.0.dylib */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE99A746231D4E9A00E328F6 /* doc */ = {
+			isa = PBXGroup;
+			children = (
+				CE99A748231D50F100E328F6 /* layout.xml */,
+				CE99A747231D4E9A00E328F6 /* style.css */,
+			);
+			path = doc;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,6 +287,23 @@
 			productReference = CE99A735231415D900E328F6 /* quemath-ivec */;
 			productType = "com.apple.product-type.tool";
 		};
+		CE99A73A23197F4200E328F6 /* quemath-quat */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE99A74023197F4200E328F6 /* Build configuration list for PBXNativeTarget "quemath-quat" */;
+			buildPhases = (
+				CE99A73B23197F4200E328F6 /* Sources */,
+				CE99A73D23197F4200E328F6 /* Frameworks */,
+				CE99A73F23197F4200E328F6 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "quemath-quat";
+			productName = "test-vector";
+			productReference = CE99A74323197F4200E328F6 /* quemath-quat */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -280,9 +334,10 @@
 			projectRoot = "";
 			targets = (
 				CE99A6F123100CBC00E328F6 /* quemath */,
-				CE99A72C231415D900E328F6 /* quemath-ivec */,
-				CE99A70D2310141000E328F6 /* quemath-vec */,
 				CE99A71F23140B1300E328F6 /* quemath-benchmark */,
+				CE99A72C231415D900E328F6 /* quemath-ivec */,
+				CE99A73A23197F4200E328F6 /* quemath-quat */,
+				CE99A70D2310141000E328F6 /* quemath-vec */,
 			);
 		};
 /* End PBXProject section */
@@ -316,6 +371,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE99A736231415E600E328F6 /* ivec.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE99A73B23197F4200E328F6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE99A74423197F5800E328F6 /* quat.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,6 +523,20 @@
 			};
 			name = Release;
 		};
+		CE99A74123197F4200E328F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CE99A74223197F4200E328F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -504,6 +581,15 @@
 			buildConfigurations = (
 				CE99A733231415D900E328F6 /* Debug */,
 				CE99A734231415D900E328F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE99A74023197F4200E328F6 /* Build configuration list for PBXNativeTarget "quemath-quat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE99A74123197F4200E328F6 /* Debug */,
+				CE99A74223197F4200E328F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

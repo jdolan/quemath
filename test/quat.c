@@ -22,44 +22,51 @@
  */
 
 #include <check.h>
-#include <math.h>
+#include <stdio.h>
 
-#include <ObjectivelyGL.h>
+#include "quat.h"
 
-#define assert_flt_eq(a, b) ck_assert(fabsf(a - b) < __FLT_EPSILON__)
-#define assert_vec_eq(a, b) \
-{ \
-	assert_flt_eq(a.x, b.x); \
-	assert_flt_eq(a.y, b.y); \
-	assert_flt_eq(a.z, b.z); \
-	assert_flt_eq(a.w, b.w); \
+static inline void assert_quat_eq(const vec a, const vec b) {
+	ck_assert_msg(quat_equals(a, b), "(%g, %g, %g, %g) == (%g, %g, %g, %g)",
+				  quat_x(a), quat_y(a), quat_z(a), quat_w(a),
+				  quat_x(b), quat_y(b), quat_z(b), quat_w(b));
 }
 
-START_TEST(_mat_identity) {
-	mat m = mat_identity();
-	assert_vec_eq(m.a, vec4(1, 0, 0, 0));
-	assert_vec_eq(m.b, vec4(0, 1, 0, 0));
-	assert_vec_eq(m.c, vec4(0, 0, 1, 0));
-	assert_vec_eq(m.d, vec4(0, 0, 0, 1));
+START_TEST(_quat0) {
+	assert_quat_eq(quat4(0, 0, 0, 0), quat0());
 } END_TEST
 
-START_TEST(_mat_translate) {
-	mat m = mat_translate(1, 2, 3);
-	assert_vec_eq(m.a, vec4(0, 0, 0, 1));
-	assert_vec_eq(m.b, vec4(0, 0, 0, 2));
-	assert_vec_eq(m.c, vec4(0, 0, 0, 3));
-	assert_vec_eq(m.d, vec4(0, 0, 0, 0));
-
-
+START_TEST(_quat1) {
+	assert_quat_eq(quat4(1, 0, 0, 0), quat1(1));
 } END_TEST
+
+START_TEST(_quat2) {
+	assert_quat_eq(quat4(1, 2, 0, 0), quat2(1, 2));
+} END_TEST
+
+START_TEST(_quat3) {
+	assert_quat_eq(quat4(1, 2, 3, 0), quat3(1, 2, 3));
+} END_TEST
+
+START_TEST(_quat4) {
+	assert_quat_eq(quat4(1, 2, 3, 4), quat4(1, 2, 3, 4));
+} END_TEST
+
 
 int main(int argc, char **argv) {
 
-	TCase *tcase = tcase_create("Matrix");
+	TCase *tcase = tcase_create("quat");
 
-	tcase_add_test(tcase, _mat_identity);
+	tcase_add_test(tcase, _quat0);
+	tcase_add_test(tcase, _quat1);
+	tcase_add_test(tcase, _quat2);
+	tcase_add_test(tcase, _quat3);
+	tcase_add_test(tcase, _quat4);
+	tcase_add_test(tcase, _quat_abs);
+	tcase_add_test(tcase, _quat_add);
+	tcase_add_test(tcase, _quat_equal);
 
-	Suite *suite = suite_create("Matrix");
+	Suite *suite = suite_create("quat");
 	suite_add_tcase(suite, tcase);
 
 	SRunner *runner = srunner_create(suite);
@@ -71,3 +78,4 @@ int main(int argc, char **argv) {
 
 	return failed;
 }
+

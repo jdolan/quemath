@@ -1,6 +1,6 @@
 /*
- * ObjectivelyGL: Object oriented OpenGL framework for GNU C.
- * Copyright (C) 2014 Jay Dolan <jay@jaydolan.com>
+ * Quemath: An SSE optimized 3D math library for games.
+ * Copyright (C) 2019 Jay Dolan <jay@jaydolan.com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -32,14 +32,6 @@ static inline void assert_ivec_eq(const ivec a, const ivec b) {
 				  ivec_x(b), ivec_y(b), ivec_z(b), ivec_w(b));
 }
 
-static inline void assert_ivec_true(const ivec v) {
-	assert_ivec_eq(ivec_true(), v);
-}
-
-static inline void assert_ivec_false(const ivec v) {
-	assert_ivec_eq(ivec_false(), v);
-}
-
 START_TEST(_ivec0) {
 	assert_ivec_eq(ivec4(0, 0, 0, 0), ivec0());
 } END_TEST
@@ -68,22 +60,22 @@ START_TEST(_ivec_add) {
 	assert_ivec_eq(ivec3(2, 4, 6), ivec_add(ivec3(1, 2, 3), ivec3(1, 2, 3)));
 } END_TEST
 
-START_TEST(_ivec_equal) {
-	assert_ivec_true(ivec_equal(ivec_new(1), ivec_new(1)));
-	assert_ivec_true(ivec_equal(ivec3(1, 2, 3), ivec3(1, 2, 3)));
-	assert_ivec_false(ivec_equal(ivec_new(1), ivec_new(2)));
+START_TEST(_ivec_equals) {
+	ck_assert_int_eq(1, ivec_equals(ivec_new(1), ivec_new(1)));
+	ck_assert_int_eq(1, ivec_equals(ivec3(1, 2, 3), ivec3(1, 2, 3)));
+	ck_assert_int_eq(0, ivec_equals(ivec_new(1), ivec_new(2)));
 } END_TEST
 
 START_TEST(_ivec_greater_than) {
-	assert_ivec_true(ivec_greater_than(ivec_new(1), ivec_new(0)));
-	assert_ivec_false(ivec_greater_than(ivec_new(0), ivec_new(1)));
-	assert_ivec_false(ivec_greater_than(ivec_new(0), ivec_new(0)));
+	ck_assert_int_eq(1, ivec_greater_than(ivec_new(1), ivec_new(0)));
+	ck_assert_int_eq(0, ivec_greater_than(ivec_new(0), ivec_new(1)));
+	ck_assert_int_eq(0, ivec_greater_than(ivec_new(0), ivec_new(0)));
 } END_TEST
 
 START_TEST(_ivec_less_than) {
-	assert_ivec_true(ivec_less_than(ivec_new(0), ivec_new(1)));
-	assert_ivec_false(ivec_less_than(ivec_new(1), ivec_new(0)));
-	assert_ivec_false(ivec_less_than(ivec_new(0), ivec_new(0)));
+	ck_assert_int_eq(1, ivec_less_than(ivec_new(0), ivec_new(1)));
+	ck_assert_int_eq(0, ivec_less_than(ivec_new(1), ivec_new(0)));
+	ck_assert_int_eq(0, ivec_less_than(ivec_new(0), ivec_new(0)));
 } END_TEST
 
 START_TEST(_ivec_random) {
@@ -143,7 +135,7 @@ int main(int argc, char **argv) {
 	tcase_add_test(tcase, _ivec4);
 	tcase_add_test(tcase, _ivec_abs);
 	tcase_add_test(tcase, _ivec_add);
-	tcase_add_test(tcase, _ivec_equal);
+	tcase_add_test(tcase, _ivec_equals);
 	tcase_add_test(tcase, _ivec_greater_than);
 	tcase_add_test(tcase, _ivec_less_than);
 	tcase_add_test(tcase, _ivec_random);

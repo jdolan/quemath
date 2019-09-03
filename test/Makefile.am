@@ -4,6 +4,8 @@ AM_TESTS_ENVIRONMENT = \
 TESTS = \
 	benchmark \
 	ivec \
+	mat \
+	quat \
 	vec
 
 CFLAGS += \

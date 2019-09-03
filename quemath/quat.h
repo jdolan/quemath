@@ -1,5 +1,5 @@
 /*
- * Quemath: An SSE4 optimized 3D math library for games.
+ * Quemath: An SSE optimized 3D math library for games.
  * Copyright (C) 2019 Jay Dolan <jay@jaydolan.com>
  *
  * This software is provided 'as-is', without any express or implied
@@ -23,23 +23,26 @@
 
 #pragma once
 
-#include <math.h>
-#include <x86intrin.h>
+#include "vec.h"
 
 /**
  * @brief Quaternions.
  */
-typedef struct {
-	/**
-	 * @brief The 128 bit SSE vector.
-	 */
-	__m128 vec;
+typedef vec quat;
 
-	/**
-	 * @brief Component accessors.
-	 */
-	struct {
-		float x, y, z, w;
-	};
-} quat;
+static inline quat quat4(float x, float y, float z, float w);
+static inline quat quat_add(const quat a, const quat b);
+static inline quat quat_identity(void);
+static inline quat quat_look_at(const vec eye, const vec v);
+static inline quat quat_normalize(const quat q);
+static inline quat quat_subtract(const quat a, const quat b);
 
+static quat quat_normalize(const quat q) {
+
+	const quat p = vec_normalize(q);
+	if (ivec_equals(vec_compare_le(p, vec0()), ivec_true())) {
+		return quat_identity();
+	} else {
+		return p;
+	}
+}

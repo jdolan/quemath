@@ -1,6 +1,6 @@
 /*
- * ObjectivelyGL: Object oriented OpenGL framework for GNU C.
- * Copyright (C) 2014 Jay Dolan <jay@jaydolan.com>
+ * Quemath: An SSE optimized 3D math library for games.
+ * Copyright (C) 2019 Jay Dolan <jay@jaydolan.com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -26,30 +26,8 @@
 
 #include "vec.h"
 
-//static inline void assert_flt_ge(float a, float b, float epsilon) {
-//	ck_assert_msg(a - b >= epsilon, "%g >= %g", a, b);
-//}
-//
-//static inline void assert_flt_lt(float a, float b, float epsilon) {
-//	ck_assert_msg(b - a > epsilon, "%g < %g", a, b);
-//}
-
 static inline void assert_flt_eq(float a, float b, float epsilon) {
 	ck_assert_msg(fabsf(a - b) < epsilon, "%g != %g", a, b);
-}
-
-static inline void assert_ivec_eq(const ivec a, const ivec b) {
-	ck_assert_msg(ivec_equals(a, b), "(%d %d %d %d) == (%d %d %d %d)",
-				  ivec_x(a), ivec_y(a), ivec_z(a), ivec_w(a),
-				  ivec_x(b), ivec_y(b), ivec_z(b), ivec_w(b));
-}
-
-static inline void assert_ivec_true(const ivec v) {
-	assert_ivec_eq(ivec_true(), v);
-}
-
-static inline void assert_ivec_false(const ivec v) {
-	assert_ivec_eq(ivec_false(), v);
 }
 
 static inline void assert_vec_eq(const vec a, const vec b) {
@@ -105,21 +83,21 @@ START_TEST(_vec_dot) {
 } END_TEST
 
 START_TEST(_vec_equal) {
-	assert_ivec_true(vec_equal(vec_new(1), vec_new(1)));
-	assert_ivec_true(vec_equal(vec3(1, 2, 3), vec3(1, 2, 3)));
-	assert_ivec_false(vec_equal(vec_new(1), vec_new(2)));
+	ck_assert_int_eq(1, vec_equals(vec_new(1), vec_new(1)));
+	ck_assert_int_eq(1, vec_equals(vec3(1, 2, 3), vec3(1, 2, 3)));
+	ck_assert_int_eq(0, vec_equals(vec_new(1), vec_new(2)));
 } END_TEST
 
 START_TEST(_vec_greater_than) {
-	assert_ivec_true(vec_greater_than(vec_new(1), vec_new(0)));
-	assert_ivec_false(vec_greater_than(vec_new(0), vec_new(1)));
-	assert_ivec_false(vec_greater_than(vec_new(0), vec_new(0)));
+	ck_assert_int_eq(1, vec_greater_than(vec_new(1), vec_new(0)));
+	ck_assert_int_eq(0, vec_greater_than(vec_new(0), vec_new(1)));
+	ck_assert_int_eq(0, vec_greater_than(vec_new(0), vec_new(0)));
 } END_TEST
 
 START_TEST(_vec_greater_than_equal) {
-	assert_ivec_true(vec_greater_than_equal(vec_new(1), vec_new(0)));
-	assert_ivec_false(vec_greater_than_equal(vec_new(0), vec_new(1)));
-	assert_ivec_true(vec_greater_than_equal(vec_new(0), vec_new(0)));
+	ck_assert_int_eq(1, vec_greater_than_equal(vec_new(1), vec_new(0)));
+	ck_assert_int_eq(0, vec_greater_than_equal(vec_new(0), vec_new(1)));
+	ck_assert_int_eq(1, vec_greater_than_equal(vec_new(0), vec_new(0)));
 } END_TEST
 
 START_TEST(_vec_length) {
@@ -129,15 +107,15 @@ START_TEST(_vec_length) {
 } END_TEST
 
 START_TEST(_vec_less_than) {
-	assert_ivec_true(vec_less_than(vec_new(0), vec_new(1)));
-	assert_ivec_false(vec_less_than(vec_new(1), vec_new(0)));
-	assert_ivec_false(vec_less_than(vec_new(0), vec_new(0)));
+	ck_assert_int_eq(1, vec_less_than(vec_new(0), vec_new(1)));
+	ck_assert_int_eq(0, vec_less_than(vec_new(1), vec_new(0)));
+	ck_assert_int_eq(0, vec_less_than(vec_new(0), vec_new(0)));
 } END_TEST
 
 START_TEST(_vec_less_than_equal) {
-	assert_ivec_true(vec_less_than_equal(vec_new(0), vec_new(1)));
-	assert_ivec_false(vec_less_than_equal(vec_new(1), vec_new(0)));
-	assert_ivec_true(vec_less_than_equal(vec_new(0), vec_new(0)));
+	ck_assert_int_eq(1, vec_less_than_equal(vec_new(0), vec_new(1)));
+	ck_assert_int_eq(0, vec_less_than_equal(vec_new(1), vec_new(0)));
+	ck_assert_int_eq(1, vec_less_than_equal(vec_new(0), vec_new(0)));
 } END_TEST
 
 START_TEST(_vec_mix) {
@@ -168,8 +146,8 @@ START_TEST(_vec_normalize_fast) {
 } END_TEST
 
 START_TEST(_vec_not_equal) {
-	assert_ivec_true(vec_not_equal(vec_new(0), vec_new(1)));
-	assert_ivec_false(vec_not_equal(vec_new(1), vec_new(1)));
+	ck_assert_int_eq(1, vec_not_equal(vec_new(0), vec_new(1)));
+	ck_assert_int_eq(0, vec_not_equal(vec_new(1), vec_new(1)));
 } END_TEST
 
 START_TEST(_vec_radians) {
@@ -184,8 +162,8 @@ START_TEST(_vec_random) {
 	const int iterations = 1000;
 	for (int i = 0; i < iterations; i++) {
 		rand = vec_random(rand);
-		assert_ivec_true(vec_greater_than_equal(rand, vec_new(0)));
-		assert_ivec_true(vec_less_than(rand, vec_new(1)));
+		ck_assert_int_eq(1, vec_greater_than_equal(rand, vec_new(0)));
+		ck_assert_int_eq(1, vec_less_than(rand, vec_new(1)));
 	}
 } END_TEST
 
@@ -195,8 +173,8 @@ START_TEST(_vec_random_range) {
 	const int iterations = 1000;
 	for (int i = 0; i < iterations; i++) {
 		rand = vec_random_range(rand, vec_new(i), vec_new(iterations));
-		assert_ivec_true(vec_greater_than_equal(rand, vec_new(i)));
-		assert_ivec_true(vec_less_than(rand, vec_new(iterations)));
+		ck_assert_int_eq(1, vec_greater_than_equal(rand, vec_new(i)));
+		ck_assert_int_eq(1, vec_less_than(rand, vec_new(iterations)));
 	}
 } END_TEST
 

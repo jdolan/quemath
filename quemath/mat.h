@@ -1,5 +1,5 @@
 /*
- * Quemath: An SSE4 optimized 3D math library for games.
+ * Quemath: An SSE optimized 3D math library for games.
  * Copyright (C) 2019 Jay Dolan <jay@jaydolan.com>
  *
  * This software is provided 'as-is', without any express or implied
@@ -23,11 +23,7 @@
 
 #pragma once
 
-#include <math.h>
-#include <x86intrin.h>
-
 #include "quat.h"
-#include "vec.h"
 
 /**
  * @brief 4x4 Matrices.

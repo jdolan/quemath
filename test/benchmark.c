@@ -1,6 +1,6 @@
 /*
- * ObjectivelyGL: Object oriented OpenGL framework for GNU C.
- * Copyright (C) 2014 Jay Dolan <jay@jaydolan.com>
+ * Quemath: An SSE optimized 3D math library for games.
+ * Copyright (C) 2019 Jay Dolan <jay@jaydolan.com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
