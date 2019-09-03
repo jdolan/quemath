@@ -1,5 +1,5 @@
 /*
- * Quemath: An SSE optimized 3D math library for games.
+ * Quemath: An SSE optimized math library for games, written in C99.
  * Copyright (C) 2019 Jay Dolan <jay@jaydolan.com>
  *
  * This software is provided 'as-is', without any express or implied
