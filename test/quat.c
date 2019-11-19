@@ -27,44 +27,28 @@
 #include "quat.h"
 
 static inline void assert_quat_eq(const vec a, const vec b) {
-	ck_assert_msg(quat_equals(a, b), "(%g, %g, %g, %g) == (%g, %g, %g, %g)",
+	ck_assert_msg(quat_equal(a, b), "(%g, %g, %g, %g) == (%g, %g, %g, %g)",
 				  quat_x(a), quat_y(a), quat_z(a), quat_w(a),
 				  quat_x(b), quat_y(b), quat_z(b), quat_w(b));
 }
 
-START_TEST(_quat0) {
-	assert_quat_eq(quat4(0, 0, 0, 0), quat0());
+START_TEST(_quat4f) {
+	assert_quat_eq(quat4f(1, 0, 0, 1), quat4f(1, 0, 0, 1));
 } END_TEST
 
-START_TEST(_quat1) {
-	assert_quat_eq(quat4(1, 0, 0, 0), quat1(1));
+START_TEST(_quat_new) {
+	assert_quat_eq(quat_identity(), quat_new(vec1f(1), 0));
+	assert_quat_eq(quat4f(1, 0, 0, 1), quat_new(vec3f(1, 1, 0), 1));
 } END_TEST
-
-START_TEST(_quat2) {
-	assert_quat_eq(quat4(1, 2, 0, 0), quat2(1, 2));
-} END_TEST
-
-START_TEST(_quat3) {
-	assert_quat_eq(quat4(1, 2, 3, 0), quat3(1, 2, 3));
-} END_TEST
-
-START_TEST(_quat4) {
-	assert_quat_eq(quat4(1, 2, 3, 4), quat4(1, 2, 3, 4));
-} END_TEST
-
 
 int main(int argc, char **argv) {
 
 	TCase *tcase = tcase_create("quat");
 
-	tcase_add_test(tcase, _quat0);
-	tcase_add_test(tcase, _quat1);
-	tcase_add_test(tcase, _quat2);
-	tcase_add_test(tcase, _quat3);
-	tcase_add_test(tcase, _quat4);
-	tcase_add_test(tcase, _quat_abs);
-	tcase_add_test(tcase, _quat_add);
-	tcase_add_test(tcase, _quat_equal);
+	tcase_add_test(tcase, _quat4f);
+	tcase_add_test(tcase, _quat_new);
+//	tcase_add_test(tcase, _quat_add);
+//	tcase_add_test(tcase, _quat_equal);
 
 	Suite *suite = suite_create("quat");
 	suite_add_tcase(suite, tcase);

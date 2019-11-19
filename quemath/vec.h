@@ -32,6 +32,57 @@
  */
 
 /**
+ * @brief Two component floating point vector type.
+ */
+typedef union {
+	/**
+	 * @brief Array accessor.
+	 */
+	float v[2];
+
+	/**
+	 * @brief Component accessors.
+	 */
+	struct {
+		float x, y;
+	};
+} vec2;
+
+/**
+ * @brief Three component floating point vector type.
+ */
+typedef union {
+	/**
+	 * @brief Array accessor.
+	 */
+	float v[3];
+
+	/**
+	 * @brief Component accessors.
+	 */
+	struct {
+		float x, y, z;
+	};
+} vec3;
+
+/**
+ * @brief Four component floating point vector type.
+ */
+typedef union {
+	/**
+	 * @brief Array accessor.
+	 */
+	float v[4];
+
+	/**
+	 * @brief Component accessors.
+	 */
+	struct {
+		float x, y, z, w;
+	};
+} vec4;
+
+/**
  * @brief Four component floating point SSE vector type.
  */
 typedef __m128 vec;
@@ -40,25 +91,35 @@ static inline ivec ivec_cast_vec(const vec v);
 static inline ivec ivec_convert_vec(const vec v);
 
 static inline vec vec0(void);
-static inline vec vec1(float x);
-static inline vec vec2(float x, float y);
-static inline vec vec3(float x, float y, float z);
-static inline vec vec4(float x, float y, float z, float w);
+static inline vec vec1f(float x);
+static inline vec vec2f(float x, float y);
+static inline vec vec2fv(const vec2 f);
+static inline vec vec3f(float x, float y, float z);
+static inline vec vec3fv(const vec3 f);
+static inline vec vec4f(float x, float y, float z, float w);
+static inline vec vec4fv(const vec4 f);
+static inline vec vec_acosf(const vec v);
 static inline vec vec_add(const vec a, const vec b);
+static inline vec vec_asinf(const vec v);
+static inline vec vec_atanf(const vec v);
+static inline vec vec_atan2f(const vec a, const vec b);
 static inline vec vec_cast_ivec(const ivec v);
 static inline vec vec_convert_ivec(const ivec v);
+static inline vec vec_cosf(const vec v);
 static inline vec vec_cross(const vec a, const vec b);
 static inline vec vec_degrees(const vec radians);
 static inline vec vec_distance(const vec a, const vec b);
 static inline vec vec_divide(const vec a, const vec b);
-static inline vec vec_dot(const vec a, const vec b);
+static inline vec vec_dot2(const vec a, const vec b);
+static inline vec vec_dot3(const vec a, const vec b);
+static inline vec vec_dot4(const vec a, const vec b);
 static inline ivec vec_compare_eq(const vec a, const vec b);
 static inline ivec vec_compare_ge(const vec a, const vec b);
 static inline ivec vec_compare_gt(const vec a, const vec b);
 static inline ivec vec_compare_le(const vec a, const vec b);
 static inline ivec vec_compare_lt(const vec a, const vec b);
 static inline ivec vec_compare_ne(const vec a, const vec b);
-static inline int vec_equals(const vec a, const vec b);
+static inline int vec_equal(const vec a, const vec b);
 static inline int vec_greater_than(const vec a, const vec b);
 static inline int vec_greater_than_equal(const vec a, const vec b);
 static inline vec vec_length(const vec v);
@@ -79,13 +140,19 @@ static inline vec vec_random_range(vec last, const vec mins, const vec maxs);
 static inline vec vec_rsqrt(const vec v);
 static inline vec vec_scale(const vec v, float scale);
 static inline vec vec_scale_add(const vec a, const vec b, float scale);
+static inline vec vec_sinf(const vec v);
 static inline vec vec_sqrt(const vec v);
 static inline vec vec_subtract(const vec a, const vec b);
+static inline vec vec_tanf(const vec v);
+static inline vec2 vec_vec2(const vec v);
+static inline vec3 vec_vec3(const vec v);
+static inline vec4 vec_vec4(const vec v);
 static inline float vec_w(const vec v);
 static inline float vec_x(const vec v);
+static inline vec vec_xyz(const vec v);
 static inline float vec_y(const vec v);
-static inline float vec_z(const vec v);
 static inline vec vec_yzx(const vec v);
+static inline float vec_z(const vec v);
 static inline vec vec_zxy(const vec v);
 
 /**
@@ -116,7 +183,7 @@ static vec vec0(void) {
  * @brief Creates a vector with components `(x, 0, 0, 0)`.
  * @return A vector with components `(x, 0, 0, 0)`.
  */
-static vec vec1(float x) {
+static vec vec1f(float x) {
 	return _mm_set_ss(x);
 }
 
@@ -124,24 +191,56 @@ static vec vec1(float x) {
  * @brief Creates a vector with components `(x, y, 0, 0)`.
  * @return A vector with components `(x, y, 0, 0)`.
  */
-static vec vec2(float x, float y) {
-	return vec3(x, y, 0);
+static vec vec2f(float x, float y) {
+	return vec3f(x, y, 0);
+}
+
+/**
+ * @brief Creates a vector with components `(f.x, f.y, 0, 0)`.
+ * @return A vector with components `(f.x, f.y, 0, 0)`.
+ */
+static vec vec2fv(const vec2 f) {
+	return vec2f(f.x, f.y);
 }
 
 /**
  * @brief Creates a vector with components `(x, y, z, 0)`.
  * @return A vector with components `(x, y, z, 0)`.
  */
-static vec vec3(float x, float y, float z) {
-	return vec4(x, y, z, 0);
+static vec vec3f(float x, float y, float z) {
+	return vec4f(x, y, z, 0);
+}
+
+/**
+ * @brief Creates a vector with components `(f.x, f.y, f.z, 0)`.
+ * @return A vector with components `(f.x, f.y, f.z, 0)`.
+ */
+static vec vec3fv(const vec3 f) {
+	return vec3f(f.x, f.y, f.z);
 }
 
 /**
  * @brief Creates a vector with components `(x, y, z, w)`.
  * @return A vector with components `(x, y, z, w)`.
  */
-static vec vec4(float x, float y, float z, float w) {
+static vec vec4f(float x, float y, float z, float w) {
 	return _mm_setr_ps(x, y, z, w);
+}
+
+/**
+ * @brief Creates a vector with components `(f.x, f.y, f.z, f.w)`.
+ * @return A vector with components `(f.x, f.y, f.z, f.w)`.
+ */
+static vec vec4fv(const vec4 f) {
+	return _mm_loadu_ps(f.v);
+}
+
+/**
+ * @brief Calculates the arc cosine of @p v.
+ * @return A vector containing the arc cosine of @p v.
+ */
+static vec vec_acosf(const vec v) {
+	return vec4f(acosf(vec_x(v)), acosf(vec_y(v)), acosf(vec_z(v)), acosf(vec_w(v)));
 }
 
 /**
@@ -150,6 +249,33 @@ static vec vec4(float x, float y, float z, float w) {
  */
 static vec vec_add(const vec a, const vec b) {
 	return _mm_add_ps(a, b);
+}
+
+/**
+ * @brief Calculates the arc sine of @p v.
+ * @return A vector containing the arc sine of @p v.
+ */
+static vec vec_asinf(const vec v) {
+	return vec4f(asinf(vec_x(v)), asinf(vec_y(v)), asinf(vec_z(v)), asinf(vec_w(v)));
+}
+
+/**
+ * @brief Calculates the arc tangent of @p v.
+ * @return A vector containing the arc tangent of @p v.
+ */
+static vec vec_atanf(const vec v) {
+	return vec4f(atanf(vec_x(v)), atanf(vec_y(v)), atanf(vec_z(v)), atanf(vec_w(v)));
+}
+
+/**
+ * @brief Calculates the two argument arc tangent of @p a and @p b.
+ * @return A vector containing the two argument arc tangent of @p a and @p b.
+ */
+static vec vec_atan2f(const vec a, const vec b) {
+	return vec4f(atan2f(vec_x(a), vec_x(b)),
+				 atan2f(vec_y(a), vec_y(b)),
+				 atan2f(vec_z(a), vec_z(b)),
+				 atan2f(vec_w(a), vec_w(b)));
 }
 
 /**
@@ -224,6 +350,14 @@ static vec vec_convert_ivec(const ivec v) {
 }
 
 /**
+ * @brief Calculates the cosine of @p v.
+ * @return A vector containing the cosine of @p v.
+ */
+static vec vec_cosf(const vec v) {
+	return vec4f(cosf(vec_x(v)), cosf(vec_y(v)), cosf(vec_z(v)), cosf(vec_w(v)));
+}
+
+/**
  * @brief Calculates the cross product of @p a `×` @p b.
  * @return A vector containing the cross product of @p a and @p b.
  */
@@ -260,24 +394,40 @@ static vec vec_divide(const vec a, const vec b) {
 }
 
 /**
- * @brief Calculates the product of @p a `·` @p b.
+ * @brief Calculates the two-component dot product of @p a `·` @p b.
  * @return A vector `(d, 0, 0, 0)`, where `d` is the dot product of @p `·` @p b.
  */
-static vec vec_dot(const vec a, const vec b) {
+static vec vec_dot2(const vec a, const vec b) {
+	return _mm_dp_ps(a, b, 0x31);
+}
+
+/**
+ * @brief Calculates the three-component dot product of @p a `·` @p b.
+ * @return A vector `(d, 0, 0, 0)`, where `d` is the dot product of @p `·` @p b.
+ */
+static vec vec_dot3(const vec a, const vec b) {
 	return _mm_dp_ps(a, b, 0x71);
 }
 
 /**
- * @brief Reduces the comparison of `a == b` to an integer scalar.
- * @return `TRUE` if @p a is equal to @p b, `FALSE` otherwise.
+ * @brief Calculates the four-component dot product of @p a `·` @p b.
+ * @return A vector `(d, 0, 0, 0)`, where `d` is the dot product of @p `·` @p b.
  */
-static int vec_equals(const vec a, const vec b) {
+static vec vec_dot4(const vec a, const vec b) {
+	return _mm_dp_ps(a, b, 0xF1);
+}
+
+/**
+ * @brief Reduces the comparison of `a == b` to an integer scalar.
+ * @return True if @p a is equal to @p b, false otherwise.
+ */
+static int vec_equal(const vec a, const vec b) {
 	return _mm_testc_si128(vec_compare_eq(a, b), ivec_true());
 }
 
 /**
  * @brief Reduces the comparison of `a > b` to an integer scalar.
- * @return `TRUE` if @p a is greater than @p b, `FALSE` otherwise.
+ * @return True if @p a is greater than @p b, false otherwise.
  */
 static int vec_greater_than(const vec a, const vec b) {
 	return _mm_testc_si128(vec_compare_gt(a, b), ivec_true());
@@ -285,7 +435,7 @@ static int vec_greater_than(const vec a, const vec b) {
 
 /**
  * @brief Reduces the comparison of `a >= b` to an integer scalar.
- * @return `TRUE` if @p a is greater than or equal to @p b, `FALSE` otherwise.
+ * @return True if @p a is greater than or equal to @p b, false otherwise.
  */
 static int vec_greater_than_equal(const vec a, const vec b) {
 	return _mm_testc_si128(vec_compare_ge(a, b), ivec_true());
@@ -296,12 +446,12 @@ static int vec_greater_than_equal(const vec a, const vec b) {
  * @return A vector `(l, 0, 0, 0)`, where `l` is the length of the vector @p v.
  */
 static vec vec_length(const vec v) {
-	return _mm_sqrt_ss(vec_dot(v, v));
+	return vec_sqrt(vec_dot3(v, v));
 }
 
 /**
  * @brief Reduces the comparison of `a < b` to an integer scalar.
- * @return `TRUE` if @p a is less than @p b, `FALSE` otherwise.
+ * @return True if @p a is less than @p b, false otherwise.
  */
 static int vec_less_than(const vec a, const vec b) {
 	return _mm_testc_si128(vec_compare_lt(a, b), ivec_true());
@@ -309,7 +459,7 @@ static int vec_less_than(const vec a, const vec b) {
 
 /**
  * @brief Reduces the comparison of `a <= b` to an integer scalar.
- * @return `TRUE` if @p a is less than or equal to @p b, `FALSE` otherwise.
+ * @return True if @p a is less than or equal to @p b, false otherwise.
  */
 static int vec_less_than_equal(const vec a, const vec b) {
 	return _mm_testc_si128(vec_compare_le(a, b), ivec_true());
@@ -368,7 +518,7 @@ static vec vec_new(float f) {
  * @return A unit vector in the same direction of @p v.
  */
 static vec vec_normalize(const vec v) {
-	return _mm_div_ps(v, _mm_sqrt_ps(_mm_dp_ps(v, v, 0x7F)));
+	return vec_divide(v, vec_sqrt(_mm_dp_ps(v, v, 0x7F)));
 }
 
 /**
@@ -376,12 +526,12 @@ static vec vec_normalize(const vec v) {
  * @return A unit vector approximation in the same direction of @p v.
  */
 static vec vec_normalize_fast(const vec v) {
-	return _mm_mul_ps(v, _mm_rsqrt_ps(_mm_dp_ps(v, v, 0x7F)));
+	return vec_multiply(v, vec_rsqrt(_mm_dp_ps(v, v, 0x7F)));
 }
 
 /**
  * @brief Reduces the comparison of `a != b` to an integer scalar.
- * @return `TRUE` if @p a is not equal to @p b, `FALSE` otherwise.
+ * @return True if @p a is not equal to @p b, false otherwise.
  */
 static int vec_not_equal(const vec a, const vec b) {
 	return _mm_testc_si128(vec_compare_ne(a, b), ivec_true());
@@ -428,7 +578,7 @@ static vec vec_rsqrt(const vec v) {
  * @return A vector containing the scalar product @p v `*` @p scale.
  */
 static vec vec_scale(const vec v, float scale) {
-	return _mm_mul_ps(v, _mm_set1_ps(scale));
+	return vec_multiply(v, vec_new(scale));
 }
 
 /**
@@ -437,6 +587,14 @@ static vec vec_scale(const vec v, float scale) {
  */
 static vec vec_scale_add(const vec a, const vec b, float scale) {
 	return vec_add(a, vec_scale(b, scale));
+}
+
+/**
+ * @brief Calculates the sine of @p v.
+ * @return A vector containing the sine of @p v.
+ */
+static vec vec_sinf(const vec v) {
+	return vec4f(sinf(vec_x(v)), sinf(vec_y(v)), sinf(vec_z(v)), sinf(vec_w(v)));
 }
 
 /**
@@ -456,13 +614,49 @@ static vec vec_subtract(const vec a, const vec b) {
 }
 
 /**
- * @return The forth component of the vector @p v.
+ * @brief Calculates the tangent of @p v.
+ * @return A vector containing the tangent of @p v.
  */
-static float vec_w(const vec v) {
-	return _mm_cvtss_f32(_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 3, 3, 3)));
+static vec vec_tanf(const vec v) {
+	return vec4f(tanf(vec_x(v)), tanf(vec_y(v)), tanf(vec_z(v)), tanf(vec_w(v)));
 }
 
 /**
+ * @brief Creates a vec2 containing the first two components of @p v.
+ * @return A vec2 containing the first two components of @p v.
+ */
+static vec2 vec_vec2(const vec v) {
+	return (vec2) { vec_x(v), vec_y(v) };
+}
+
+/**
+ * @brief Creates a vec3 containing the first three components of @p v.
+ * @return A vec3 containing the first three components of @p v.
+ */
+static vec3 vec_vec3(const vec v) {
+	return (vec3) { vec_x(v), vec_y(v), vec_z(v) };
+}
+
+/**
+ * @brief Creates a vec4 containing all four components of @p v.
+ * @return A vec4 containing all four components of @p v.
+ */
+static vec4 vec_vec4(const vec v) {
+	vec4 out;
+	_mm_storeu_ps(out.v, v);
+	return out;
+}
+
+/**
+ * @brief The `w` component accessor.
+ * @return The fourth component of the vector @p v.
+ */
+static float vec_w(const vec v) {
+	return _mm_cvtss_f32(_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 2, 1, 3)));
+}
+
+/**
+ * @brief The first component accessor.
  * @return The first component of the vector @p v.
  */
 static float vec_x(const vec v) {
@@ -470,31 +664,43 @@ static float vec_x(const vec v) {
 }
 
 /**
+ * @brief Creates the swizzle `(x, y, z, 0)` of the vector @p v.
+ * @return The swizzle `(x, y, z, 0)` of the vector @p v.
+ */
+static vec vec_xyz(const vec v) {
+	return _mm_and_ps(v, ivec3i(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF));
+}
+
+/**
+ * @brief The second component accessor.
  * @return The second component of the vector @p v.
  */
 static float vec_y(const vec v) {
-	return _mm_cvtss_f32(_mm_shuffle_ps(v, v, _MM_SHUFFLE(1, 1, 1, 1)));
+	return _mm_cvtss_f32(_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 2, 1, 1)));
 }
 
 /**
+ * @brief Creates the swizzle `(y, z, x, 0)` of the vector @p v.
+ * @return The swizzle `(y, z, x, 0)` of the vector @p v.
+ */
+static vec vec_yzx(const vec v) {
+	return vec_xyz(_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 0, 2, 1)));
+}
+
+/**
+ * @brief The third component accessor.
  * @return The third component of the vector @p v.
  */
 static float vec_z(const vec v) {
-	return _mm_cvtss_f32(_mm_shuffle_ps(v, v, _MM_SHUFFLE(2, 2, 2, 2)));
+	return _mm_cvtss_f32(_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 2, 1, 2)));
 }
 
 /**
- * @return A swizzle, or shuffle vector `(y, z, x, w)` of the vector @p v.
- */
-static vec vec_yzx(const vec v) {
-	return _mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 0, 2, 1));
-}
-
-/**
- * @return A swizzle, or shuffle vector `(z, x, y, w)` of the vector @p v.
+ * @brief Creates the swizzle `(z, x, y, 0)` of the vector @p v.
+ * @return The swizzle `(z, x, y, 0)` of the vector @p v.
  */
 static vec vec_zxy(const vec v) {
-	return _mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 1, 0, 2));
+	return vec_xyz(_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 1, 0, 2)));
 }
 
 /**

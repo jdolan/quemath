@@ -33,15 +33,33 @@
  */
 
 /**
+ * @brief Two component integer vector type.
+ */
+typedef int ivec2[2];
+
+/**
+ * @brief Three component integer vector type.
+ */
+typedef int ivec3[3];
+
+/**
+ * @brief Four component integer vector type.
+ */
+typedef int ivec4[4];
+
+/**
  * @brief Four component integer SSE vector type.
  */
 typedef __m128i ivec;
 
 static inline ivec ivec0(void);
-static inline ivec ivec1(int x);
-static inline ivec ivec2(int x, int y);
-static inline ivec ivec3(int x, int y, int z);
-static inline ivec ivec4(int x, int y, int z, int w);
+static inline ivec ivec1i(int x);
+static inline ivec ivec2i(int x, int y);
+static inline ivec ivec2iv(const ivec2 i);
+static inline ivec ivec3i(int x, int y, int z);
+static inline ivec ivec3iv(const ivec3 i);
+static inline ivec ivec4i(int x, int y, int z, int w);
+static inline ivec ivec4iv(const ivec4 i);
 static inline ivec ivec_abs(const ivec v);
 static inline ivec ivec_add(const ivec a, const ivec b);
 static inline ivec ivec_compare_eq(const ivec a, const ivec b);
@@ -66,6 +84,7 @@ static inline int ivec_y(const ivec v);
 static inline int ivec_z(const ivec v);
 
 /**
+ * @brief Creates an integer vector with all components initialized to zero.
  * @return An integer vector with all components initialized to zero.
  */
 static ivec ivec0(void) {
@@ -73,31 +92,59 @@ static ivec ivec0(void) {
 }
 
 /**
+ * @brief Creates an integer vector with components `(x, 0, 0, 0)`.
  * @return An integer vector with components `(x, 0, 0, 0)`.
  */
-static ivec ivec1(int x) {
-	return ivec2(x, 0);
+static ivec ivec1i(int x) {
+	return ivec2i(x, 0);
 }
 
 /**
+ * @brief Creates an integer vector with components `(x, y, 0, 0)`.
  * @return An integer vector with components `(x, y, 0, 0)`.
  */
-static ivec ivec2(int x, int y) {
-	return ivec3(x, y, 0);
+static ivec ivec2i(int x, int y) {
+	return ivec3i(x, y, 0);
 }
 
 /**
+ * @brief Creates an integer vector with components `(i[0], i[1], 0, 0)`.
+ * @return An integer vector with components `(i[0], i[1], 0, 0)`.
+ */
+static ivec ivec2iv(const ivec2 i) {
+	return ivec2i(i[0], i[1]);
+}
+
+/**
+ * @brief Creates an integer vector with components `(x, y, z, 0)`.
  * @return An integer vector with components `(x, y, z, 0)`.
  */
-static ivec ivec3(int x, int y, int z) {
-	return ivec4(x, y, z, 0);
+static ivec ivec3i(int x, int y, int z) {
+	return ivec4i(x, y, z, 0);
 }
 
 /**
+ * @brief Creates an integer vector with components `(i[0], i[1], i[2], 0)`.
+ * @return An integer vector with components `(i[0], i[1], i[2], 0)`.
+ */
+static ivec ivec3iv(const ivec3 i) {
+	return ivec3i(i[0], i[1], i[3]);
+}
+
+/**
+ * @brief Creates an integer vector with components `(x, y, z, w)`.
  * @return An integer vector with components `(x, y, z, w)`.
  */
-static ivec ivec4(int x, int y, int z, int w) {
+static ivec ivec4i(int x, int y, int z, int w) {
 	return _mm_setr_epi32(x, y, z, w);
+}
+
+/**
+ * @brief Creates an integer vector with components `(i[0], i[1], i[2], i[3])`.
+ * @return An integer vector with components `(i[0], i[1], i[2], i[3])`.
+ */
+static ivec ivec4iv(const ivec4 i) {
+	return _mm_loadu_si128((const __m128i *) i);
 }
 
 /**
@@ -109,6 +156,7 @@ static ivec ivec_abs(const ivec v) {
 }
 
 /**
+ * @brief Calculates the sum of @p a `+` @p b.
  * @return An integer vector containing the sum @p a `+` @p b.
  */
 static ivec ivec_add(const ivec a, const ivec b) {
@@ -143,6 +191,7 @@ static ivec ivec_compare_lt(const ivec a, const ivec b) {
 }
 
 /**
+ * @brief Creates an integer vector with all four components initialied to false (`0x0`).
  * @return An integer vector with all four components initialized to false (`0x0`).
  */
 static ivec ivec_false(void) {
@@ -151,7 +200,7 @@ static ivec ivec_false(void) {
 
 /**
  * @brief Reduces the comparison of `a == b` to an integer scalar.
- * @return `TRUE` if @p a is equal to @p b, `FALSE` otherwise.
+ * @return True if @p a is equal to @p b, false otherwise.
  */
 static int ivec_equals(const ivec a, const ivec b) {
 	return _mm_testc_si128(ivec_compare_eq(a, b), ivec_true());
@@ -159,7 +208,7 @@ static int ivec_equals(const ivec a, const ivec b) {
 
 /**
  * @brief Reduces the comparison of `a > b` to an integer scalar.
- * @return `TRUE` if @p a is greater than @p b, `FALSE` otherwise.
+ * @return True if @p a is greater than @p b, false otherwise.
  */
 static int ivec_greater_than(const ivec a, const ivec b) {
 	return _mm_testc_si128(ivec_compare_gt(a, b), ivec_true());
@@ -167,13 +216,14 @@ static int ivec_greater_than(const ivec a, const ivec b) {
 
 /**
  * @brief Reduces the comparison of `a < b` to an integer scalar.
- * @return `TRUE` if @p a is less than @p b, `FALSE` otherwise.
+ * @return True if @p a is less than @p b, false otherwise.
  */
 static int ivec_less_than(const ivec a, const ivec b) {
 	return _mm_testc_si128(ivec_compare_lt(a, b), ivec_true());
 }
 
 /**
+ * @brief Calculates the maximum values of @p a and @p b.
  * @return An integer vector containing the maximum components of @p a and @p b.
  */
 static ivec ivec_max(const ivec a, const ivec b) {
@@ -181,6 +231,7 @@ static ivec ivec_max(const ivec a, const ivec b) {
 }
 
 /**
+ * @brief Calculates the minimum values of @p a and @p b.
  * @return An integer vector containing the minimum components of @p a and @p b.
  */
 static ivec ivec_min(const ivec a, const ivec b) {
@@ -188,16 +239,18 @@ static ivec ivec_min(const ivec a, const ivec b) {
 }
 
 /**
+ * @brief Calculates the integer modulo of @p a `%` @p b.
  * @return An integer vector containing the modulo of @p a `%` @p b.
  */
 static ivec ivec_modulo(const ivec a, const ivec b) {
-	return ivec4(ivec_x(a) % ivec_x(b),
+	return ivec4i(ivec_x(a) % ivec_x(b),
 				 ivec_y(a) % ivec_y(b),
 				 ivec_z(a) % ivec_z(b),
 				 ivec_w(a) % ivec_w(b));
 }
 
 /**
+ * @brief Calculates the product of @p a `*` @p b.
  * @return An integer vector containing the product of @p a `*` @p b.
  */
 static ivec ivec_multiply(const ivec a, const ivec b) {
@@ -205,6 +258,7 @@ static ivec ivec_multiply(const ivec a, const ivec b) {
 }
 
 /**
+ * @brief Creates a vector with components `(i, i, i, i)`.
  * @return An integer vector with components `(i, i, i, i)`.
  */
 static ivec ivec_new(int i) {
@@ -236,6 +290,7 @@ static ivec ivec_random_range(ivec last, ivec mins, ivec maxs) {
 }
 
 /**
+ * @brief Calculates the difference of @p a `-` @p b.
  * @return An integer vector containing the difference of @p a `-` @p b.
  */
 static ivec ivec_subtract(const ivec a, const ivec b) {
@@ -243,6 +298,7 @@ static ivec ivec_subtract(const ivec a, const ivec b) {
 }
 
 /**
+ * @brief Creates an integer vector with all four components initialized to true (`0xFFFFFFFF`).
  * @return An integer vector with all four components initialized to true (`0xFFFFFFFF`).
  */
 static ivec ivec_true(void) {

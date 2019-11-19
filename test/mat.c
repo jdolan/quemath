@@ -37,18 +37,18 @@
 
 START_TEST(_mat_identity) {
 	mat m = mat_identity();
-	assert_vec_eq(m.a, vec4(1, 0, 0, 0));
-	assert_vec_eq(m.b, vec4(0, 1, 0, 0));
-	assert_vec_eq(m.c, vec4(0, 0, 1, 0));
-	assert_vec_eq(m.d, vec4(0, 0, 0, 1));
+	assert_vec_eq(m.a, vec4f(1, 0, 0, 0));
+	assert_vec_eq(m.b, vec4f(0, 1, 0, 0));
+	assert_vec_eq(m.c, vec4f(0, 0, 1, 0));
+	assert_vec_eq(m.d, vec4f(0, 0, 0, 1));
 } END_TEST
 
 START_TEST(_mat_translate) {
 	mat m = mat_translate(1, 2, 3);
-	assert_vec_eq(m.a, vec4(0, 0, 0, 1));
-	assert_vec_eq(m.b, vec4(0, 0, 0, 2));
-	assert_vec_eq(m.c, vec4(0, 0, 0, 3));
-	assert_vec_eq(m.d, vec4(0, 0, 0, 0));
+	assert_vec_eq(m.a, vec4f(0, 0, 0, 1));
+	assert_vec_eq(m.b, vec4f(0, 0, 0, 2));
+	assert_vec_eq(m.c, vec4f(0, 0, 0, 3));
+	assert_vec_eq(m.d, vec4f(0, 0, 0, 0));
 
 
 } END_TEST

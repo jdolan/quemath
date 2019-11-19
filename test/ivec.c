@@ -33,36 +33,36 @@ static inline void assert_ivec_eq(const ivec a, const ivec b) {
 }
 
 START_TEST(_ivec0) {
-	assert_ivec_eq(ivec4(0, 0, 0, 0), ivec0());
+	assert_ivec_eq(ivec4i(0, 0, 0, 0), ivec0());
 } END_TEST
 
-START_TEST(_ivec1) {
-	assert_ivec_eq(ivec4(1, 0, 0, 0), ivec1(1));
+START_TEST(_ivec1i) {
+	assert_ivec_eq(ivec4i(1, 0, 0, 0), ivec1i(1));
 } END_TEST
 
-START_TEST(_ivec2) {
-	assert_ivec_eq(ivec4(1, 2, 0, 0), ivec2(1, 2));
+START_TEST(_ivec2i) {
+	assert_ivec_eq(ivec4i(1, 2, 0, 0), ivec2i(1, 2));
 } END_TEST
 
-START_TEST(_ivec3) {
-	assert_ivec_eq(ivec4(1, 2, 3, 0), ivec3(1, 2, 3));
+START_TEST(_ivec3i) {
+	assert_ivec_eq(ivec4i(1, 2, 3, 0), ivec3i(1, 2, 3));
 } END_TEST
 
-START_TEST(_ivec4) {
-	assert_ivec_eq(ivec4(1, 2, 3, 4), ivec4(1, 2, 3, 4));
+START_TEST(_ivec4i) {
+	assert_ivec_eq(ivec4i(1, 2, 3, 4), ivec4i(1, 2, 3, 4));
 } END_TEST
 
 START_TEST(_ivec_abs) {
-	assert_ivec_eq(ivec4(1, 2, 3, 4), ivec_abs(ivec4(-1, 2, -3, 4)));
+	assert_ivec_eq(ivec4i(1, 2, 3, 4), ivec_abs(ivec4i(-1, 2, -3, 4)));
 } END_TEST
 
 START_TEST(_ivec_add) {
-	assert_ivec_eq(ivec3(2, 4, 6), ivec_add(ivec3(1, 2, 3), ivec3(1, 2, 3)));
+	assert_ivec_eq(ivec3i(2, 4, 6), ivec_add(ivec3i(1, 2, 3), ivec3i(1, 2, 3)));
 } END_TEST
 
 START_TEST(_ivec_equals) {
 	ck_assert_int_eq(1, ivec_equals(ivec_new(1), ivec_new(1)));
-	ck_assert_int_eq(1, ivec_equals(ivec3(1, 2, 3), ivec3(1, 2, 3)));
+	ck_assert_int_eq(1, ivec_equals(ivec3i(1, 2, 3), ivec3i(1, 2, 3)));
 	ck_assert_int_eq(0, ivec_equals(ivec_new(1), ivec_new(2)));
 } END_TEST
 
@@ -82,7 +82,7 @@ START_TEST(_ivec_random) {
 
 	ivec min = ivec_new(RAND_MAX), max = ivec_new(0);
 
-	ivec rand = ivec4(0xfeed, 0xdad, 0xdead, 0xbeef);
+	ivec rand = ivec4i(0xfeed, 0xdad, 0xdead, 0xbeef);
 
 	const int iterations = 1000;
 	for (int i = 0; i < iterations; i++) {
@@ -105,7 +105,7 @@ START_TEST(_ivec_random) {
 
 START_TEST(_ivec_random_range) {
 
-	ivec rand = ivec4(0xfeed, 0xdad, 0xdead, 0xbeef);
+	ivec rand = ivec4i(0xfeed, 0xdad, 0xdead, 0xbeef);
 
 	const int iterations = 1000;
 	for (int i = 0; i < iterations; i++) {
@@ -129,10 +129,10 @@ int main(int argc, char **argv) {
 	TCase *tcase = tcase_create("ivec");
 
 	tcase_add_test(tcase, _ivec0);
-	tcase_add_test(tcase, _ivec1);
-	tcase_add_test(tcase, _ivec2);
-	tcase_add_test(tcase, _ivec3);
-	tcase_add_test(tcase, _ivec4);
+	tcase_add_test(tcase, _ivec1i);
+	tcase_add_test(tcase, _ivec2i);
+	tcase_add_test(tcase, _ivec3i);
+	tcase_add_test(tcase, _ivec4i);
 	tcase_add_test(tcase, _ivec_abs);
 	tcase_add_test(tcase, _ivec_add);
 	tcase_add_test(tcase, _ivec_equals);

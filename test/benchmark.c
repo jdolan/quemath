@@ -44,9 +44,9 @@ static vec *vectors(size_t count) {
 static vec *random_vectors(size_t count) {
 	vec *v = vectors(count), *out = v;
 
-	vec state = vec4(0xfeed, 0xdad, 0xdead, 0xbeef);
+	vec rand = vec4f(0xfeed, 0xdad, 0xdead, 0xbeef);
 	for (size_t i = 0; i < count; i++) {
-		*out++ = vec_random(&state);
+		*out++ = rand = vec_random(rand);
 	}
 
 	return v;
@@ -107,7 +107,7 @@ START_TEST(_vec_dot) {
 			const vec a = v[(i + 0) % iterations];
 			const vec b = v[(i + 1) % iterations];
 			vec *c = &v[(i + 2) % iterations];
-			*c = vec_dot(a, b);
+			*c = vec_dot3(a, b);
 		}
 	});
 
@@ -162,7 +162,7 @@ START_TEST(_vec_normalize) {
 } END_TEST
 
 static vec VectorScaleAdd(const vec a, const vec b, float scale) {
-	return vec3(a[0] + scale * b[0], a[1] + scale * b[1], a[2] + scale * b[2]);
+	return vec3f(a[0] + scale * b[0], a[1] + scale * b[1], a[2] + scale * b[2]);
 }
 
 START_TEST(_vec_scale_add) {

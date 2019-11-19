@@ -310,7 +310,7 @@
 		CE99A6EA23100CBC00E328F6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1030;
+				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = "https://github.com/jdolan";
 				TargetAttributes = {
 					CE99A6F123100CBC00E328F6 = {
@@ -327,6 +327,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = CE99A6E923100CBC00E328F6;
 			productRefGroup = CE99A6F323100CBC00E328F6 /* Products */;
@@ -465,6 +466,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/quemath;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -477,6 +479,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/quemath;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
